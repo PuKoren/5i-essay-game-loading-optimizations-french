@@ -101,6 +101,8 @@ Les temps de chargement peuvent égallement être réduits en utilisant le proce
 
 En modifiant l'algorithme du jeu, nous pouvons aussi influer sur le chargement des données, en évitant par exemple de stocker plusieurs fois des ressources très similaires. Si nous prennons l'exemple des sprites 2D, nous pouvons stocker l'image de base une fois, puis effectuer toutes les déclinaisons de couleurs de manière algorithmique en modifiant la palette de couleurs. De cette façon, nous n'avons qu'à stocker une texture, puis uniquement des palettes de couleurs.
 
+Enfin, une méthode pour cacher les chargements aux joueurs consiste à construire sont level design pour permettre certaines zones "tampons" comme un pont ou un couloir dont le passage est obligatoire pour passer d'une zone à l'autre, et qui va permettre de charger/décharger les zones concernées en tout transparence pour l'utilisateur. Cependant, cette technique est déconseillée puisqu'elle limite la liberté des level-designers en leur imposant des contraintes "techniques".
+
 \begin{wrapfigure}{l}{0.4\textwidth} % Inline image example
 \begin{center}
 %\includegraphics[width=0.38\textwidth]{fish.png}
