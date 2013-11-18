@@ -96,12 +96,6 @@ La quantité de mémoire disponible augmente régulièrement sur les postes des 
 \section*{Comment influencer les temps de chargement}
 Les temps de chargement peuvent être influencés de différentes manières.
 
-\begin{wrapfigure}{l}{0.4\textwidth}
-\begin{center}
-\includegraphics[width=0.38\textwidth]{images/hdd.png}
-\end{center}
-\caption{Disque dur classique}
-\end{wrapfigure}
 Nous pouvons améliorer les temps de chargement en utilisant des techniques de stockage qui varient en fonction du média sur lequel le jeu est enregistré. Par exemple, les temps d'accès étant plutôt long sur un cd-rom, il faut veiller à limiter le nombre d'accès aux ressources et penser à charger des elements qui ne seront pas forcèment affichés tout de suite, lors des premiers chargements si la mémoire le permet.
 
 Au contraire sur un disque SSD, les temps d'accès étant très bas et la capacité de transfert élevée, on pourra séparer les ressources dans des fichiers différents afin de les charger quasiement à la volée.
@@ -113,16 +107,50 @@ En modifiant l'algorithme du jeu, nous pouvons aussi influer sur le chargement d
 Enfin, une méthode pour cacher les chargements aux joueurs consiste à construire sont level design pour permettre certaines zones "tampons" comme un pont ou un couloir dont le passage est obligatoire pour passer d'une zone à l'autre, et qui va permettre de charger/décharger les zones concernées en tout transparence pour l'utilisateur. Cependant, cette technique est déconseillée puisqu'elle limite la liberté des level-designers en leur imposant des contraintes "techniques".
 
 %------------------------------------------------
-\section*{Benchmark des differents supports de stockage}
-Vitesse de transfert des lecteurs CD-ROM: \cite{computerhope:cdromspeed}\\
-\begin{tabular}{|l|c|r|}
+\section*{Optimisation par le matériel}
+\subsection*{Benchmark des différents supports de stockage}
+Pour mieux comprendre comment organiser nos ressources et la façon de les charger en fonction du support de stockage destiné au jeu, nous devons d'abord étudier et comprendre les deux principaux facteurs des temps de chargement liés au matériel: la vitesse de transfert et le temps d'accès.
+
+\subsubsection*{Les CD-ROM}
+\begin{wrapfigure}{r}{0.4\textwidth}
+\begin{center}
+\includegraphics[width=0.38\textwidth]{images/cdrom.png}
+\end{center}
+\caption{Lecteur CD-ROM}
+\end{wrapfigure}
+Les CD-ROM ne sont plus beaucoup utilisés pour les jeux vidéos, qui dépassent maintenant souvent la capacité de stockage de ceux ci (entre 600 et 900Mo). Ils sont remplacés par des supports comme les DVD-ROM ou les Blueray. Cependant, il est intéressant d'étudier ce support de stockage pour une meilleur compréhension de l'évolution des périphériques.
+
+Le CD-ROM a beaucoup été utilisé dans les années 90 et 2000, car le cout de fabrication de ce support est faible et ses capacité de stockage suffisantes, quitte à fournir régulièrement 4 CD-ROM dans les boites de jeu.
+
+La vitesse de lecture de ce support est, par contre assez faible et rapidement les jeux ont utilisé ce média pour simplement installer les données sur le disque dur et servir de DRM.
+\pagebreak
+
+Vitesse de transfert des lecteurs CD-ROM: \cite{computerhope:cdromspeed}
+
+\begin{tabular}{|l|c|c|}
   \hline
-  colonne 1 & colonne 2 & colonne 3 \\
+  Vitesse du lecteur & Taux de transfert (BPS) & Latence (ms)\\
   \hline
-  1.1 & 1.2 & 1.3 \\
-  2.1 & 2.2 & 2.3 \\
+  Single-speed (1x)&153,600&400\\
+	Double-speed (2x)&307,200&300\\
+	Triple-speed (3x)&460,800&200\\
+	Quad-speed (4x)&614,400&150\\
+	Six-speed (6x)&921,600&150\\
+	Eight-speed (8x)&1,228,800&100\\
+	Ten speed (10x)&1,536,000&100\\
+	Twelve speed (12x)&1,843,200&100\\
+	Sixteen speed (16x)&2,457,600&90\\
+	Eighteen speed (18x)&2,764,800&90\\
+	Twenty four speed (24x)&3,686,400&90\\
+	Thirty two speed (32x)&4,915,200&85\\
+	One hundred speed (100x)&15,360,000&80\\
+	CAV drives (12x - 24x)&1,843,200 - 3,686,400&150-90\\
   \hline
 \end{tabular}
+
+Comme nous pouvons le constater, les temps d'accès du lecteur CD-ROM sont assez élevé. Si nous devons charger 50 petits fichiers sur un lecteur 16x, nous ajoutons inutilement 4 secondes et demi de temps de chargement. Il convient donc d'encapsuler ces 50 fichiers dans un seul, de le charger d'une traite puis de faire la séparation des fichiers en mémoire.
+C'est pour cette raison que sur les CD-ROMs de jeux nous trouvons souvent que peu de fichiers, mais qui prennent une grande partie de l'espace.
+
 %------------------------------------------------
 %\section*{Optimisation par compression}
 
