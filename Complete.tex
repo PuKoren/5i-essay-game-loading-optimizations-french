@@ -109,7 +109,7 @@ Enfin, une méthode pour cacher les chargements aux joueurs consiste à construi
 %------------------------------------------------
 \section*{Optimisation par le matériel}
 \subsection*{Benchmark des différents supports de stockage}
-Pour mieux comprendre comment organiser nos ressources et la façon de les charger en fonction du support de stockage destiné au jeu, nous devons d'abord étudier et comprendre les deux principaux facteurs des temps de chargement liés au matériel: la vitesse de transfert et le temps d'accès.
+Pour mieux comprendre comment organiser nos ressources et la façon de les charger en fonction du support de stockage destiné au jeu, nous devons d'abord étudier et comprendre les deux principaux facteurs des temps de chargement liés au matériel: la vitesse de transfert et le temps d'accès. Le temps d'accès représente le temps écoulé entre le moment où la demande d'accès aux données va être effectuée et le début du transfert de cette donnée. Par exemple sur un disque dur, le temps que celui ci va prendre pour positionner sa tête de lecture, faire tourner le disque à la bonne position et commencer à lire la donnée. Le taux de transfert est le nombre de données qu'il est capable de faire transiter du support de stockage à la mémoire, par seconde.
 
 \subsubsection*{Les CD-ROM}
 \begin{wrapfigure}{r}{0.4\textwidth}
@@ -123,9 +123,8 @@ Les CD-ROM ne sont plus beaucoup utilisés pour les jeux vidéos, qui dépassent
 Le CD-ROM a beaucoup été utilisé dans les années 90 et 2000, car le cout de fabrication de ce support est faible et ses capacité de stockage suffisantes, quitte à fournir régulièrement 4 CD-ROM dans les boites de jeu.
 
 La vitesse de lecture de ce support est, par contre assez faible et rapidement les jeux ont utilisé ce média pour simplement installer les données sur le disque dur et servir de DRM.
-\pagebreak
 
-Vitesse de transfert des lecteurs CD-ROM: \cite{computerhope:cdromspeed}
+Vitesse de transfert des lecteurs CD-ROM: \cite{hardware:cdromspeed}
 
 \begin{tabular}{|l|c|c|}
   \hline
@@ -150,6 +149,13 @@ Vitesse de transfert des lecteurs CD-ROM: \cite{computerhope:cdromspeed}
 
 Comme nous pouvons le constater, les temps d'accès du lecteur CD-ROM sont assez élevé. Si nous devons charger 50 petits fichiers sur un lecteur 16x, nous ajoutons inutilement 4 secondes et demi de temps de chargement. Il convient donc d'encapsuler ces 50 fichiers dans un seul, de le charger d'une traite puis de faire la séparation des fichiers en mémoire.
 C'est pour cette raison que sur les CD-ROMs de jeux nous trouvons souvent que peu de fichiers, mais qui prennent une grande partie de l'espace.
+
+\subsubsection*{Lecteur DVD-ROM}
+Le DVD-ROM a une vitesse 9 fois supérieure à celle d'un CD-ROM,\cite{hardware:dvdromspeed} pour une capacité allant de 4.7Go à 17.08Go (ce dernier étant très rare). Le temps d'accès aux données sur un DVD-ROM est d'environ 100ms pour les plus rapides, ce temps variant en fonction des lecteurs. Nous retrouvons donc avec les DVD-ROM le même problème qu'avec les CD-ROM: le temps d'accès au données élevé. Le taux de transfert et la quantité de données qu'il est possible de stocker sur celui ci en fait cependant un successeur de choix au CD-ROM, améliorant au passage les temps de chargement grâce à sa vitesse de lecture améliorée.
+
+\subsubsection*{Lecteur BD-ROM}
+Le BD-ROM est capable de transférer les données de 4.5Mo par seconde (x1) à 72Mo par seconde (x16)\cite{hardware:bdromspeed} et peut stocker entre 25Go et 50Go de données. Cela représente 50 fois la vitesse d'un CD-ROM. Bien que ses temps d'accès soient similaires voir plus grand que pour les DVD-ROMs, sa vitesse de transfert lui permet cependant de proposer des temps de chargements plus rapides, les données étant stockées sous forme de flux dans l'ordre d'utilisation comme pour les autres supports sous forme de disque, sa capacité de stockage permet en plus d’alléger le travail du processeur en proposant des données moins compressées.
+
 
 %------------------------------------------------
 %\section*{Optimisation par compression}
