@@ -30,6 +30,7 @@
 \usepackage[utf8]{inputenc} % UTF-8 encoding for input, to get french special characters recognized
 \usepackage[T1]{fontenc} % Required for accented characters
 \linespread{1.05} % Change line spacing here, Palatino benefits from a slight increase by default
+\usepackage{parskip} % add some space between paragraph
 
 \makeatletter
 \renewcommand\@biblabel[1]{\textbf{#1.}} % Change the square brackets for each bibliography item from '[1]' to '1.'
@@ -102,21 +103,26 @@ Les temps de chargement peuvent être influencés de différentes manières.
 \caption{Disque dur classique}
 \end{wrapfigure}
 Nous pouvons améliorer les temps de chargement en utilisant des techniques de stockage qui varient en fonction du média sur lequel le jeu est enregistré. Par exemple, les temps d'accès étant plutôt long sur un cd-rom, il faut veiller à limiter le nombre d'accès aux ressources et penser à charger des elements qui ne seront pas forcèment affichés tout de suite, lors des premiers chargements si la mémoire le permet.
-\\
+
 Au contraire sur un disque SSD, les temps d'accès étant très bas et la capacité de transfert élevée, on pourra séparer les ressources dans des fichiers différents afin de les charger quasiement à la volée.
-\\
-\\
-\\
+
 Les temps de chargement peuvent égallement être réduits en utilisant le processeur pour décompresser des ressources: ainsi le temps necessaire au transfert de la donnée depuis le disque à la mémoire est réduit puisque la donnée est compressée sur le dit disque. Il faut cependant que le mode de compression soit adapté à la puissance du processeur et à la vitesse de transmission du support de stockage.
-\\
+
 En modifiant l'algorithme du jeu, nous pouvons aussi influer sur le chargement des données, en évitant par exemple de stocker plusieurs fois des ressources très similaires. Si nous prennons l'exemple des sprites 2D, nous pouvons stocker l'image de base une fois, puis effectuer toutes les déclinaisons de couleurs de manière algorithmique en modifiant la palette de couleurs. De cette façon, nous n'avons qu'à stocker une texture, puis uniquement des palettes de couleurs.
-\\
-\\
+
 Enfin, une méthode pour cacher les chargements aux joueurs consiste à construire sont level design pour permettre certaines zones "tampons" comme un pont ou un couloir dont le passage est obligatoire pour passer d'une zone à l'autre, et qui va permettre de charger/décharger les zones concernées en tout transparence pour l'utilisateur. Cependant, cette technique est déconseillée puisqu'elle limite la liberté des level-designers en leur imposant des contraintes "techniques".
 
 %------------------------------------------------
-%\section*{Optimisation hardware}
-
+\section*{Benchmark des differents supports de stockage}
+Vitesse de transfert des lecteurs CD-ROM: \cite{computerhope:cdromspeed}\\
+\begin{tabular}{|l|c|r|}
+  \hline
+  colonne 1 & colonne 2 & colonne 3 \\
+  \hline
+  1.1 & 1.2 & 1.3 \\
+  2.1 & 2.2 & 2.3 \\
+  \hline
+\end{tabular}
 %------------------------------------------------
 %\section*{Optimisation par compression}
 
