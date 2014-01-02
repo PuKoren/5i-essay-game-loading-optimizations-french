@@ -201,7 +201,17 @@ Cependant, il faut décompresser ce fichier en mémoire pour pouvoir l'utiliser 
 %\section*{Optimisation par algorithme}
 
 %------------------------------------------------
-%\section*{Optimisation par le level design}
+\newpage
+\section*{Optimisation par le level design}
+Une autre façon d'améliorer les temps de chargement est d'adapter le level design afin de satisfaire les exigences des plate formes visées. Par exemple, si nous prenons la carte d'un jeu à monde ouvert comme GTA 3, sorti sur Playstation 2 et PC nous pouvons voir que les différentes parties de la ville sont organisées de façon à laisser un 'couloir' disponible pour que les chargements liés aux déplacements du joueur puissent avoir lieu.
+
+\begin{figure}[!h]%
+\includegraphics[width=\columnwidth]{images/gta3_map.png}%
+\caption{Zones de chargement dans GTA 3}%
+\label{}%
+\end{figure}
+
+Cependant, les chargements sont appliqués de manière assez brutale, le jeu étant bloqué en attendant la réception des données. Rockstar a donc échoué à proposer un chargement fluide malgré l'adaptation du level design, peut être par manque de temps car tout était prévu pour avoir un chargement effectué en tâche de fond.
 
 %------------------------------------------------
 
@@ -210,7 +220,7 @@ Cependant, il faut décompresser ce fichier en mémoire pour pouvoir l'utiliser 
 %----------------------------------------------------------------------------------------
 %	BIBLIOGRAPHY
 %----------------------------------------------------------------------------------------
-
+\newpage
 \bibliographystyle{unsrt}
 \bibliography{References}
 
