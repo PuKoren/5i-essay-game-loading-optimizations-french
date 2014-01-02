@@ -107,7 +107,7 @@ En modifiant l'algorithme du jeu, nous pouvons aussi influer sur le chargement d
 Enfin, une méthode pour cacher les chargements aux joueurs consiste à construire sont level design pour permettre certaines zones "tampons" comme un pont ou un couloir dont le passage est obligatoire pour passer d'une zone à l'autre, et qui va permettre de charger/décharger les zones concernées en tout transparence pour l'utilisateur. Cependant, cette technique est déconseillée puisqu'elle limite la liberté des level-designers en leur imposant des contraintes "techniques".
 
 %------------------------------------------------
-\section*{Optimisation par le matériel}
+\section*{Optimisations liées au matériel}
 \subsection*{Benchmark des différents supports de stockage}
 Pour mieux comprendre comment organiser nos ressources et la façon de les charger en fonction du support de stockage destiné au jeu, nous devons d'abord étudier et comprendre les deux principaux facteurs des temps de chargement liés au matériel: la vitesse de transfert et le temps d'accès. Le temps d'accès représente le temps écoulé entre le moment où la demande d'accès aux données va être effectuée et le début du transfert de cette donnée. Par exemple sur un disque dur, le temps que celui ci va prendre pour positionner sa tête de lecture, faire tourner le disque à la bonne position et commencer à lire la donnée. Le taux de transfert est le nombre de données qu'il est capable de faire transiter du support de stockage à la mémoire, par seconde.
 
@@ -161,7 +161,7 @@ Le BD-ROM est capable de transférer les données de 4.5Mo par seconde (x1) à 7
 \begin{center}
 \includegraphics[width=0.38\textwidth]{images/hdd.png}
 \end{center}
-\caption{Lecteur CD-ROM}
+\caption{Disque dur}
 \end{wrapfigure}
 Le disque dur est le support de stockage le plus utilisé sur PC. Présent depuis les années 60 dans les ordinateurs de bureau, il a depuis continué à s'améliorer et à augmenter ses performances de lecture/écriture et ses temps d'accès. Le premier disque dur avait un temps d'accès de 600ms. Dès les années 80, ce temps a été réduit à 20ms et a continué de diminuer depuis.
 
@@ -179,7 +179,23 @@ Les caractéristiques du SSD sont proches de celles des cassettes de jeu vidéo 
 Si nous avons vu la supériorité des disques durs et SSD par rapport aux supports au format disque, nous pouvons quand même tirer partie du lecteur de disque pour améliorer encore les performances. Ainsi, nous pouvons nous servir du DVD/BD pour installer le jeu sur le disque dur, et garder une partie du disque qui servira lorsque le jeu sera lancé. Cela permettra d'accéder aux données à la fois du disque dur et sur le DVD/BD dans le jeu. C'est cette méthode qui est employée actuellement sur console, profitant du fait qu'elles soient équipées en disque dur pour réduire les temps de chargement.
 
 %------------------------------------------------
-%\section*{Optimisation par compression}
+\newpage
+\section*{Optimisation par l'organisation des fichiers}
+La technique la plus utilisée dans les jeux à monde ouverts disponibles sur disque optique est la technique du streaming, ou chargement par flux. Les données sont organisées sur le disque de manière à être chargées les unes à la suite des autres pour que le lecteur de disque puisse lire les données sans effectuer un nouveau tour pour se repositionner.
+
+Si nous prenons l'exemple de Just Cause, les données du terrain sont séparées sur le disque sous forme de patch, contenant la heightmap du terrain, les textures et les données du mesh. Compte tenu du fait qu'ils avaient encore de l'espace disponible sur le disque optique, ils ont stocké les données du terrain deux fois: une fois ordonné en x vers z et une fois en z vers x. Ainsi les données peuvent être chargées sous forme de flux en fonction de la direction du joueur \cite{industry:justcause-streaming}.
+
+Ainsi nous remarquons qu'une technique d'optimisation de chargement peut passer par la duplication des données pour s'adapter au support de stockage. A partir de ce constat nous pouvons imaginer de nombreuses possibilités pour optimiser le chargement de nos données: fichiers par flux sur le disque optique et fichiers organisés de manière séparée sur le disque dur, en chargeant les données du terrain sur le disque en flux en fonction des déplacements du joueur et celles du disque dur pour les évènements aléatoires ou les chargements de ressources contenant beaucoup de données.
+
+Une technique pour constituer les fichiers de flux est de placer des logs dans le code pour voir dans quel ordre les ressources sont chargées, ainsi il suffira de les placer dans le même ordre dans le fichier de flux.
+
+
+%------------------------------------------------
+\newpage
+\section*{Optimisation par compression}
+Un fichier compressé prends moins de place sur un support de stockage qu'un fichier non compressé, cela permet de réduire le temps de passage d'un fichier du support de stockage à la mémoire de l'ordinateur ou de la carte graphique.
+
+Cependant, il faut décompresser ce fichier en mémoire pour pouvoir l'utiliser et cette étape du chargement sollicite le processeur.
 
 %------------------------------------------------
 %\section*{Optimisation par algorithme}
