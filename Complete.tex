@@ -212,7 +212,7 @@ Pour permettre un jeu fluide et éviter les écrans de chargements, il convient 
 \begin{center}
 \includegraphics[width=0.45\textwidth]{images/patch-system-three.png}
 \end{center}
-\caption{Disque dur}
+\caption{Systeme de patch}
 \end{wrapfigure}
 
 La figure ci contre représente un système de patch sous forme d'arbre avec plusieurs niveaux de détail. Au centre, les patch sont détaillés et découpés en petites zones et sont chargées avec tout leur contenu en mémoire. Les cellules moyennes qui sont plus éloignées du joueur, sont elles chargées de manière incomplète (seul les données importantes au rendu à moyenne distance: données terrain, textures, habitations, arbres, etc.). Les patch plus gros sont eux chargés grossièrement, pour avoir un rendu simpliste nécessitant peu de ressources. Ainsi en fonction du déplacement du joueur, les zones autour de lui vont changer en suivant la même direction pour passer en mode détaillé, moyen ou léger. Un problème peut survenir dans le cas où le joueur se déplace de manière rapide. Dans ce cas, seul les zones contenues dans le frustrum pourront passer en détaillé, tandis que les celles derrière le véhicule et sur les côtés pourront passer plus rapidement en mode léger.
@@ -232,6 +232,7 @@ Cependant, il faut décompresser ce fichier en mémoire pour pouvoir l'utiliser 
 %------------------------------------------------
 \newpage
 \section*{Optimisation par le level design}
+\subsection*{Modification du monde}
 Une autre façon d'améliorer les temps de chargement est d'adapter le level design afin de satisfaire les exigences des plate formes visées. Par exemple, si nous prenons la carte d'un jeu à monde ouvert comme GTA 3, sorti sur Playstation 2 et PC nous pouvons voir que les différentes parties de la ville sont organisées de façon à laisser un 'couloir' disponible pour que les chargements liés aux déplacements du joueur puissent avoir lieu.
 
 \begin{figure}[!h]%
@@ -241,6 +242,30 @@ Une autre façon d'améliorer les temps de chargement est d'adapter le level des
 \end{figure}
 
 Cependant, les chargements sont appliqués de manière assez brutale, le jeu étant bloqué en attendant la réception des données. Rockstar a donc échoué à proposer un chargement fluide malgré l'adaptation du level design, cependant cette technique leur a permis d'imposer un chargement dans des zones sans intérêt pour que le joueur puisse profiter d'un jeu fluide en dehors de ces zones tampons.
+
+\newpage
+\subsection*{Intégrer le chargement au monde}
+Les chargements peuvent être intégrés au jeu et complètement transparents pour l'utilisateur. Si nous prenons l'exemple de Metroid Prime sur Gamecube, le jeu très détaillé nécessite de charger beaucoup de données. Cependant, il ne présente aucun écran de chargement. Les développeurs ont eu une idée astucieuse pour camoufler ces chargements et savoir dans quelle zone le joueur va se diriger pour charger uniquement le nécessaire.
+
+\begin{wrapfigure}{l}{0.5\textwidth}
+\begin{center}
+\includegraphics[width=0.45\textwidth]{images/metroid-prime_map.png}
+\end{center}
+\caption{Salle d'un niveau de Metroid Prime}
+\end{wrapfigure}
+
+Sur l'image ci-contre, nous pouvons apercevoir une salle d'un niveau du jeu, avec en bleu les portes qui permettent au joueur de quitter la salle pour en rejoindre une autre. A priori, impossible de savoir vers quelle porte le joueur va se diriger, et charger l'ensemble des zones connectées prendrait trop de mémoire et ne permettrait pas d'avoir un monde aussi détaillé. Pour résoudre ce problème, les développeurs du jeu ont trouvé une astuce: demander au joueur de réaliser une action vers la porte qu'il souhaite franchir, en tirant dessus. Une fois le tir envoyé sur la porte, le chargement de la zone connectée est lancé.
+
+\begin{wrapfigure}{r}{0.40\textwidth}
+\begin{center}
+\includegraphics[width=0.35\textwidth]{images/metroid-prime_door.png}
+\end{center}
+\caption{Porte avant activation}
+\end{wrapfigure}
+Visuellement, le joueur comprend la situation: une porte bleue est une porte qui peut être ouverte avec un tir, et une fois que le halo bleu a disparu, la porte se prépare à être ouverte au bout d'un certain délai, plus ou moins long. Cependant le fait que l'utilisateur soit actif pour ces zones de chargement donne l'impression que le jeu n'en présente pas.
+
+Ce mécanismes se retrouvent dans de nombreux autres jeux, où un obstacle nous fait face (souvent une porte ou un portail) et ne s'ouvre que lorsque la zone suivante est complètement chargée.
+Dans un monde ouvert, cela peut poser un problème puisque cette méthode semble plus adaptée aux jeux découpés en salles. Cependant nous pouvons appliquer ce mécanismes aux habitations qui bordent les routes, aux grottes bloquées par un rocher à exploser, etc.
 
 %------------------------------------------------
 
