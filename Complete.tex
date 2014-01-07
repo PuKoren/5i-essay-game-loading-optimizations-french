@@ -102,11 +102,13 @@ Au contraire sur un disque SSD, les temps d'accès étant très bas et la capaci
 
 Les temps de chargement peuvent égallement être réduits en utilisant le processeur pour décompresser des ressources: ainsi le temps necessaire au transfert de la donnée depuis le disque à la mémoire est réduit puisque la donnée est compressée sur le dit disque. Il faut cependant que le mode de compression soit adapté à la puissance du processeur et à la vitesse de transmission du support de stockage.
 
+\newpage
 En modifiant l'algorithme du jeu, nous pouvons aussi influer sur le chargement des données, en évitant par exemple de stocker plusieurs fois des ressources très similaires. Si nous prennons l'exemple des sprites 2D, nous pouvons stocker l'image de base une fois, puis effectuer toutes les déclinaisons de couleurs de manière algorithmique en modifiant la palette de couleurs. De cette façon, nous n'avons qu'à stocker une texture, puis uniquement des palettes de couleurs.
 
 Enfin, une méthode pour cacher les chargements aux joueurs consiste à construire sont level design pour permettre certaines zones "tampons" comme un pont ou un couloir dont le passage est obligatoire pour passer d'une zone à l'autre, et qui va permettre de charger/décharger les zones concernées en tout transparence pour l'utilisateur. Cependant, cette technique est déconseillée puisqu'elle limite la liberté des level-designers en leur imposant des contraintes "techniques".
 
 %------------------------------------------------
+\newpage
 \section*{Optimisations liées au matériel}
 \subsection*{Benchmark des différents supports de stockage}
 Pour mieux comprendre comment organiser nos ressources et la façon de les charger en fonction du support de stockage destiné au jeu, nous devons d'abord étudier et comprendre les deux principaux facteurs des temps de chargement liés au matériel: la vitesse de transfert et le temps d'accès. Le temps d'accès représente le temps écoulé entre le moment où la demande d'accès aux données va être effectuée et le début du transfert de cette donnée. Par exemple sur un disque dur, le temps que celui ci va prendre pour positionner sa tête de lecture, faire tourner le disque à la bonne position et commencer à lire la donnée. Le taux de transfert est le nombre de données qu'il est capable de faire transiter du support de stockage à la mémoire, par seconde.
@@ -124,6 +126,7 @@ Le CD-ROM a beaucoup été utilisé dans les années 90 et 2000, car le cout de 
 
 La vitesse de lecture de ce support est, par contre assez faible et rapidement les jeux ont utilisé ce média pour simplement installer les données sur le disque dur et servir de DRM.
 
+\newpage
 Vitesse de transfert des lecteurs CD-ROM: \cite{hardware:cdromspeed}
 
 \begin{tabular}{|l|c|c|}
@@ -182,6 +185,16 @@ Si nous avons vu la supériorité des disques durs et SSD par rapport aux suppor
 %------------------------------------------------
 \newpage
 \section*{Techniques d'optimisation}
+\subsection*{Généralités}
+Il existe 3 façons majeures de charger les données nécessaires à un jeu en mémoire.
+
+La première est de charger les données au démarrage du niveau ou du jeu et de les garder en mémoire tout le long du jeu. C'est la meilleure solution pour les ressources qui seront nécessaires à toutes les étapes du jeu, ou pour les ressources critiques du jeu sans lesquelles le jeu ne pourra pas tourner (cela permet de faire une vérification par la même occasion). Puisque ces données seront chargées quoi qu'il arrive, nous pouvons optimiser le temps de chargement en les chargeant dès le menu ou dès l'apparition des sponsors au début du jeu.
+
+La deuxième façon est de charger les données nécessaires en fonction de la position du joueur et de l'orientation de la caméra. Nous pouvons charger les données aux alentours du joueur et des données plus détaillées en fonction de la direction dans laquelle le joueur regarde. Ainsi, ce sont autant de données en moins à charger au lancement du niveau ou du jeu, et cela permet d'éviter des écrans de chargement qui détériorent l’expérience de jeu de l'utilisateur.
+
+La troisième façon est basée sur les évènements: par exemple commencer à charger une zone lorsque le joueur sélectionne un objet qui lui permet de s'y téléporter, charger une séquence d'animation quand le joueur parle à un personnage qui va la déclencher, etc.
+
+\newpage
 \subsection*{Organisation des fichiers}
 La technique la plus utilisée dans les jeux à monde ouverts disponibles sur disque optique est la technique du streaming, ou chargement par flux. Les données sont organisées sur le disque de manière à être chargées les unes à la suite des autres pour que le lecteur de disque puisse lire les données sans effectuer un nouveau tour pour se repositionner.
 
