@@ -235,6 +235,7 @@ Un second problème se pose dans le cas ou un déplacement instantané peut surv
 %------------------------------------------------
 \newpage
 \section*{Optimisation par compression}
+\subsection*{Généralités}
 La compression de données regroupe un ensemble de techniques permettant de réduire considérablement le volume de données avec ou sans perte d'information. On utilise généralement des algorithmes qui permettent de compresser les données. Si l'algorithme utilisé est sans perte, la totalité des données compressées est récupérée lors de la décompression tandis que si l'algorithme est avec perte, seule une partie des données originales est récupérée (on essaie alors de garder les informations pertinentes). La perte reste minime en fonction des algorithmes utilisés ce qui rend la reconstruction de l'information raisonnable et satisfaisante. 
 
 \begin{figure}[!h]%
@@ -249,7 +250,11 @@ Dans les jeux vidéo de nombreux éléments sont utilisés et doivent être stoc
 
 Étant donnée la diversité des éléments qui composent un jeu, plusieurs techniques spécifiques sont parfois nécessaires pour compresser et décompresser tel ou tel type de fichier. Ainsi les images, les vidéos et les sons ne seront pas forcément traités de la même manière. Ces éléments sont souvent très volumineux et le but est de parvenir à les compresser au maximum pour atteindre une vitesse de transfert satisfaisante tout en conservant un niveau de qualité le plus élevé possible. 
 
-Les données des images et des vidéos sont mesurés par un nombre d'unité binaire (bits), c'est pourquoi on parle de vitesse de transfert de bits (bit rate) comme étant le paramètre principal lors de la compression de données.
+Les données des images et des vidéos sont mesurés par un nombre d'unité binaire (bits), c'est pourquoi on parle de vitesse de transfert de bits (bit rate) comme étant le paramètre principal lors de la compression de données. 
+
+\subsection*{Compression des meshes}
+Les jeux vidéo utilisent généralement des meshes (maillages) représentant toutes les formes possibles (personnages, bâtiment, véhicules, objets, etc.). Dans le domaine des jeux vidéo, on préfère avoir des maillages composés uniquement de triangles pour leur simplicité. Le nombre de polygones que les machines peuvent afficher est limité, c'est pourquoi on utilise les maillages. Ces formes sont plus ou moins complexes et doivent souvent être compressées pour des questions de volume et de transfert. Pour des jeux en 3 dimensions, une carte graphique peut afficher des milliers de polygones (en 2005, une carte graphique pouvait afficher 180 millions de triangles par secondes).
+
 
 Cependant, il faut décompresser ce fichier en mémoire pour pouvoir l'utiliser et cette étape du chargement sollicite le processeur.
 
