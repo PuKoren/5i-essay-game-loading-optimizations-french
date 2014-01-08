@@ -192,10 +192,36 @@ La première est de charger les données au démarrage du niveau ou du jeu et de
 
 La deuxième façon est de charger les données nécessaires en fonction de la position du joueur et de l'orientation de la caméra. Nous pouvons charger les données aux alentours du joueur et des données plus détaillées en fonction de la direction dans laquelle le joueur regarde. Ainsi, ce sont autant de données en moins à charger au lancement du niveau ou du jeu, et cela permet d'éviter des écrans de chargement qui détériorent l’expérience de jeu de l'utilisateur.
 
-La troisième façon est basée sur les événements : par exemple commencer à charger une zone lorsque le joueur sélectionne un objet qui lui permet de s'y téléporter, charger une séquence d'animation quand le joueur parle à un personnage qui va la déclencher, etc.
+La troisième façon est basée sur les évènements : par exemple commencer à charger une zone lorsque le joueur sélectionne un objet qui lui permet de s'y téléporter, charger une séquence d'animation quand le joueur parle à un personnage qui va la déclencher, etc.
 
 \newpage
-\subsection*{Organisation des fichiers}
+\subsection*{Stockage des données}
+Pour améliorer les temps de chargement, les données sont organisées sur les disques en fonction de leurs secteurs et généralement dans un seul fichier d'archive (afin de minimiser les appels aux fonctions open et close du système d'exploitation, qui sont relativement lentes).
+
+
+Ainsi notre fichier contenant les ressources reste toujours ouvert, et il ne nous reste plus qu'à lire les parties du fichier qui nous intéressent. Il convient donc d'optimiser la partie lecture pour que notre jeu charge le plus vite possible. Pour cela, il faut faire attention à la manière dont sont stockées les données, en l’occurrence leur position vis à vis des secteurs.
+
+\begin{figure}[!h]%
+\begin{center} 
+\includegraphics[width=0.60\columnwidth]{images/disk_sector.png}%
+\caption{Secteurs d'un disque dur et d'un CD-ROM}%
+\label{}%
+\end{center}
+\end{figure}
+
+Un secteur est un fragment d'un disque qui va contenir les données stockées, un disque est composé de plusieurs secteurs mis les uns à la suite des autres. Lors d'une opération de lecture, la tête de lecture du disque ou le laser pour un disque optique va se positionner en face du secteur, et commencer à lire les données. Le temps de positionnement est le plus long, mais à chaque fois que la tête se déplacer pour parcourir un secteur, nous perdons du temps. 
+Une technique pour réduire cette perte est d'aligner les fichiers sur les secteurs (ce qui entraine une perte d'espace, si le média à un espace limité, il ne sera peut être pas possible de réaliser cette opération) \cite{industry:streaming-for-loading}.
+
+\begin{figure}[!h]%
+\begin{center} 
+\includegraphics[width=0.60\columnwidth]{images/sector_storage.png}%
+\caption{Alignement des données sur les seceurs}%
+\label{}%
+\end{center}
+\end{figure}
+
+\newpage
+\subsection*{Organisation et duplication des fichiers}
 La technique la plus utilisée dans les jeux à monde ouverts disponibles sur disque optique est la technique du streaming, ou chargement par flux. Les données sont organisées sur le disque de manière à être chargées les unes à la suite des autres pour que le lecteur de disque puisse lire les données sans effectuer un nouveau tour pour se repositionner.
 
 Si nous prenons l'exemple de Just Cause, les données du terrain sont séparées sur le disque sous forme de patch, contenant la heightmap du terrain, les textures et les données du mesh. Compte tenu du fait qu'ils avaient encore de l'espace disponible sur le disque optique, ils ont stocké les données du terrain deux fois: une fois ordonné en x vers z et une fois en z vers x. Ainsi les données peuvent être chargées sous forme de flux en fonction de la direction du joueur \cite{industry:justcause-streaming}.
@@ -259,7 +285,7 @@ Cependant, il faut décompresser ce fichier en mémoire pour pouvoir l'utiliser 
 %------------------------------------------------
 \newpage
 \section*{Optimisation par le level design}
-\subsection*{Modification du monde}
+\subsection*{Conception du monde}
 Une autre façon d'améliorer les temps de chargement est d'adapter le level design afin de satisfaire les exigences des plate formes visées. Par exemple, si nous prenons la carte d'un jeu à monde ouvert comme GTA 3, sorti sur Playstation 2 et PC nous pouvons voir que les différentes parties de la ville sont organisées de façon à laisser un 'couloir' disponible pour que les chargements liés aux déplacements du joueur puissent avoir lieu.
 
 \begin{figure}[!h]%
@@ -271,7 +297,7 @@ Une autre façon d'améliorer les temps de chargement est d'adapter le level des
 Cependant, les chargements sont appliqués de manière assez brutale, le jeu étant bloqué en attendant la réception des données. Rockstar a donc échoué à proposer un chargement fluide malgré l'adaptation du level design, cependant cette technique leur a permis d'imposer un chargement dans des zones sans intérêt pour que le joueur puisse profiter d'un jeu fluide en dehors de ces zones tampons.
 
 \newpage
-\subsection*{Intégrer le chargement au monde}
+\subsection*{Intégration au monde}
 Les chargements peuvent être intégrés au jeu et complètement transparents pour l'utilisateur. Si nous prenons l'exemple de Metroid Prime sur Gamecube, le jeu très détaillé nécessite de charger beaucoup de données. Cependant, il ne présente aucun écran de chargement. Les développeurs ont eu une idée astucieuse pour camoufler ces chargements et savoir dans quelle zone le joueur va se diriger pour charger uniquement le nécessaire.
 
 \begin{wrapfigure}{l}{0.5\textwidth}
