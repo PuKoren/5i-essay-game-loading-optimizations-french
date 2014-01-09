@@ -278,8 +278,91 @@ Dans les jeux vidéo de nombreux éléments sont utilisés et doivent être stoc
 
 Les données des images et des vidéos sont mesurés par un nombre d'unité binaire (bits), c'est pourquoi on parle de vitesse de transfert de bits (bit rate) comme étant le paramètre principal lors de la compression de données. 
 
+\newpage
+\subsection*{Compression des images}
+Les images sont très utilisées et en grande quantité dans les jeux vidéo. C'est pourquoi la compression joue un rôle très important. Ils existent plusieurs algorithmes de compression qui permettent de comprimer les images. Bien entendu, certaines méthodes seront plus adaptées pour un type d'image particulier que pour un autre. 
+
+Voici les différents types d'images et leurs caractéristiques : 
+
+\begin{tabular}{|p{0.1\columnwidth}|p{0.25\columnwidth}|p{0.55\columnwidth}|}
+  \hline
+  Format & Nom & Caractéristique\\\hline\hline
+  BMP&Windows bitmap&Format non compressé\\\hline
+	TIFF&Tagged Image File Format&Sans perte\\\hline
+	PNG&Portable Network Graphics&Sans perte, amélioration du format GIF. Basé sur l'algorithme de compression Deflate\\\hline
+	JPEG&Joint Photographic Experts Group&Avec perte, taux de compression élevé\\\hline
+	JPEG 2000&Joint Photographic Experts Group 2000&Avec perte, une amélioration du format JPEG\\\hline
+\end{tabular}
+
+Quelques remarques concernant ces différents formats d'image : 
+
+\begin{itemize}
+  \item Le format JPEG a un taux de compression élevé, réduisant ainsi la qualité de l'image. Il est idéal pour les grandes images et les photos.
+	\item Le format PNG est un algorithme de compression sans perte. Il est très efficace pour des images contenant peu de couleurs différentes ou possédant des grandes zones contenant une couleur unie.
+	\item Il est préférable d'utiliser le format PNG pour des images contenant du texte.
+	\item Le format JPEG 2000 a un taux de compression supérieur à celui du format JPEG.
+\end{itemize}
+
+Voici les résultats récupérés dans le document "Comparison of different image compression formats"\cite{compression:images-compression-formats} présentant les tests de Paula Aguilera concernant les différentes type de compressions d'image :
+
+\subsubsection*{Compression sans perte}
+Pour une image de 24 bit de profondeur de couleur pesant 696KB dans un format BMP contenant de nombreuses zones de couleur homogène.
+
+\begin{center}
+\centering
+	\begin{tabular}{|l|c|c|}
+		\hline
+		Format & Poids (en KB)& Taux de compression\\
+		\hline
+		BMP&696&1:1\\
+		TIFF-LZW&378&2:1\\
+		PNG&258&2.7:1\\
+		JPEG&43.3&16:1\\
+		\hline
+	\end{tabular}
+\end {center}
+
+Pour une image en niveau de gris pesant 257KB dans un format BMP contenant beaucoup de détails.
+\begin{center}
+\centering
+	\begin{tabular}{|l|c|c|}
+		\hline
+		Format & Poids (en KB)& Taux de compression\\
+		\hline
+		BMP&257&1:1\\
+		TIFF-LZW&251&1:1\\
+		PNG&173&1.5:1\\
+		JPEG&79&3.2:1\\
+		\hline
+	\end{tabular}
+\end{center}
+
+\subsubsection*{Compression avec perte}
+
+Pour une image de 24 bit de profondeur de couleur pesant 768KB dans un format BMP contenant des couleurs vives et des textures. Pour une compression au format JPEG, on peut choisir le degré de qualité que l'on souhaite conserver lors de la compression. Il s'agit d'un nombre entre 1 et 100, plus le chiffre est grand plus le taux de compression sera faible et donc plus la qualité d'image sera élevée. Voici les résultats des tests avec une compression au format JPEG avec des niveaux définis à 100, 50, 10 et 1.
+
+\begin{center}
+	\begin{tabular}{|l|c|c|}
+		\hline
+		Format & Poids (en KB)& Taux de compression\\
+		\hline
+		BMP&768&1:1\\
+		TIFF&768&1:1\\
+		PNG&768&1:1\\
+		JPEG - 100&334&2.3:1\\
+		JPEG - 50&49.5&15.5:1\\
+		JPEG - 10&16.3&47:1\\
+		JPEG - 1&6.3&121:1\\
+		\hline
+	\end{tabular}
+\end{center}
+
+D'après ces tests, les compressions en format PNG et TIFF ne sont pas efficaces à cause des couleurs vives et des textures. 
+
+De manière générale, lors d'une compression le format PNG est un très bon choix car le taux de compression est raisonnable avec une qualité d'image satisfaisante, tandis que le format JPEG donnera un taux de compression élevé mais une qualité d'image moins intéressante. Même si le poids des images JPEG est plus faible que celles en PNG, leur qualité est appauvrie par la compression. 
+
 \subsection*{Compression des meshes}
-Les jeux vidéo utilisent généralement des meshes (maillages) représentant toutes les formes possibles (personnages, bâtiment, véhicules, objets, etc.). Dans le domaine des jeux vidéo, on préfère avoir des maillages composés uniquement de triangles pour leur simplicité. Le nombre de polygones que les machines peuvent afficher est limité, c'est pourquoi on utilise les maillages. Ces formes sont plus ou moins complexes et doivent souvent être compressées pour des questions de volume et de transfert. Pour des jeux en 3D, une carte graphique peut afficher des milliers de polygones (en 2005, une carte graphique pouvait afficher 180 millions de triangles par secondes).
+Les jeux vidéo utilisent généralement des meshes (maillages) représentant toutes les formes possibles (personnages, bâtiment, véhicules, objets, etc.). Dans le domaine des jeux vidéo, on préfère avoir des maillages composés uniquement de triangles pour leur simplicité. Le nombre de polygones que les machines peuvent afficher est limité, c'est pourquoi on utilise les maillages. Ces formes sont plus ou moins complexes et doivent souvent être compressées pour des questions de volume et de transfert. Pour des jeux en 3D, une carte graphique peut afficher des milliers de polygones (en 2005, une carte graphique pouvait afficher 180 millions de triangles par secondes)\cite{compression:meshes}.
 
 \begin{figure}[!h]%
 \includegraphics[width=\columnwidth]{images/meshes.jpg}%
@@ -291,7 +374,7 @@ Une forme contenant de nombreux triangles sera plus complexe et donc plus détai
 
 Plus le nombre de polygones que l'on souhaite afficher à l'écran est élevé, plus les capacités de la machine seront sollicitées. Dans les jeux 3D à monde ouvert, il faut charger et afficher les éléments de l'environnement les plus proches du joueur mais aussi parfois les plus éloignés (paysages lointains par exemple). Le but est alors de réussir à charger ces différents objets le plus rapidement possible pour que le jeu soit fluide (le joueur préfère ne pas voir les objets apparaître devant son personnage). La vitesse de chargement des meshes dépend de leur taille, du nombre de polygones dont ils sont composés et des ressources de la machine. En effet il faudra plus de temps pour charger un objet très détaillé (définit par de nombreux polygones) qu'un objet simple. Une astuce consiste à réaliser des meshes complexes pour les éléments qui seront affichés près de la caméra, tandis que pour des éléments qui seront toujours éloigné du personnage tel que les montagnes ou les nuages, il s'agira plutôt de meshes simplifiés. Grâce à cette méthode, la vitesse de chargement de l'environnement est relativement plus rapide.
 
-La compression des meshes permet aussi d'obtenir des fichiers moins volumineux. On distingue toujours la compression avec ou sans perte. La première insiste sur le fait que certains détails seront supprimés avant la compression, il s'agit en général d'éléments jugés non perceptibles par l’œil humain lors de la visualisation. %Il est possible d'appliquer
+La compression des meshes permet aussi d'obtenir des fichiers moins volumineux. On distingue toujours la compression avec ou sans perte. La première insiste sur le fait que certains détails seront supprimés avant la compression, il s'agit en général d'éléments jugés non perceptibles par l’œil humain lors de la visualisation. 
 
 Cependant, il faut décompresser ce fichier en mémoire pour pouvoir l'utiliser et cette étape du chargement sollicite le processeur.
 
