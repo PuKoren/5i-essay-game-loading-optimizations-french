@@ -192,7 +192,7 @@ La première est de charger les données au démarrage du niveau ou du jeu et de
 
 La deuxième façon est de charger les données nécessaires en fonction de la position du joueur et de l'orientation de la caméra. Nous pouvons charger les données aux alentours du joueur et des données plus détaillées en fonction de la direction dans laquelle le joueur regarde. Ainsi, ce sont autant de données en moins à charger au lancement du niveau ou du jeu, et cela permet d'éviter des écrans de chargement qui détériorent l’expérience de jeu de l'utilisateur.
 
-La troisième façon est basée sur les évènements : par exemple commencer à charger une zone lorsque le joueur sélectionne un objet qui lui permet de s'y téléporter, charger une séquence d'animation quand le joueur parle à un personnage qui va la déclencher, etc.
+La troisième façon est basée sur les événements : par exemple commencer à charger une zone lorsque le joueur sélectionne un objet qui lui permet de s'y téléporter, charger une séquence d'animation quand le joueur parle à un personnage qui va la déclencher, etc.
 
 \newpage
 \subsection*{Stockage des données}
@@ -272,7 +272,7 @@ La compression de données regroupe un ensemble de techniques permettant de réd
 
 Un fichier compressé prend moins de place sur un support de stockage qu'un fichier non compressé, cela permet de réduire le temps de passage d'un fichier du support de stockage à la mémoire de l'ordinateur ou de la carte graphique. Autrement dit le volume de la donnée compressée est plus petit, de même le temps des transferts est réduit. Puisque la taille des données contenues dans les jeux est parfois très grande, il serait impensable de les stocker sur le support de stockage sans les compresser au préalable. De plus en plus, la compression devient quasiment indispensable pour stocker la totalité d'un jeu. En effet, même si la capacité et les performances des différents composants des ordinateurs ou des consoles évoluent d'année en année, le volume des données est tellement grand que nos machines ne parviennent pas toujours à gérer une quantité aussi grande d'information.
 
-Dans les jeux vidéo de nombreux éléments sont utilisés et doivent être stockés (images, sons, objets 3D, etc.). De ne jours, la totalité des données d'un jeu peut être contenue sur un disque et il s'agit très souvent de données compressées qui doivent être décompressées puis installées sur la machine pour jouer.
+Dans les jeux vidéo de nombreux éléments sont utilisés et doivent être stockés (images, sons, objets 3D, etc.). De ne jours, la totalité des données d'un jeu peut être contenue sur un disque et il s'agit très souvent de données compressées qui doivent être décompressées lors de leur chargement en cours de jeu.
 
 Étant donnée la diversité des éléments qui composent un jeu, plusieurs techniques spécifiques sont parfois nécessaires pour compresser et décompresser tel ou tel type de fichier. Ainsi les images, les vidéos et les sons ne seront pas forcément traités de la même manière. Ces éléments sont souvent très volumineux et le but est de parvenir à les compresser au maximum pour atteindre une vitesse de transfert satisfaisante tout en conservant un niveau de qualité le plus élevé possible. 
 
@@ -361,6 +361,8 @@ D'après ces tests, les compressions en format PNG et TIFF ne sont pas efficaces
 
 De manière générale, lors d'une compression le format PNG est un très bon choix car le taux de compression est raisonnable avec une qualité d'image satisfaisante, tandis que le format JPEG donnera un taux de compression élevé mais une qualité d'image moins intéressante. Même si le poids des images JPEG est plus faible que celles en PNG, leur qualité est appauvrie par la compression. 
 
+Il faut ensuite s'intéresser au temps de chargement nécessaire pour décompresser le fichier en mémoire pour pouvoir l'utiliser et cette étape du chargement sollicite le processeur.
+
 \subsection*{Compression des meshes}
 Les jeux vidéo utilisent généralement des meshes (maillages) représentant toutes les formes possibles (personnages, bâtiment, véhicules, objets, etc.). Dans le domaine des jeux vidéo, on préfère avoir des maillages composés uniquement de triangles pour leur simplicité. Le nombre de polygones que les machines peuvent afficher est limité, c'est pourquoi on utilise les maillages. Ces formes sont plus ou moins complexes et doivent souvent être compressées pour des questions de volume et de transfert. Pour des jeux en 3D, une carte graphique peut afficher des milliers de polygones (en 2005, une carte graphique pouvait afficher 180 millions de triangles par secondes)\cite{compression:meshes}.
 
@@ -376,7 +378,9 @@ Plus le nombre de polygones que l'on souhaite afficher à l'écran est élevé, 
 
 La compression des meshes permet aussi d'obtenir des fichiers moins volumineux. On distingue toujours la compression avec ou sans perte. La première insiste sur le fait que certains détails seront supprimés avant la compression, il s'agit en général d'éléments jugés non perceptibles par l’œil humain lors de la visualisation. 
 
-Cependant, il faut décompresser ce fichier en mémoire pour pouvoir l'utiliser et cette étape du chargement sollicite le processeur.
+\subsection*{Compression des vidéos}
+
+
 
 %------------------------------------------------
 %\section*{Optimisation par algorithme}
