@@ -85,15 +85,18 @@ Dans ce mémoire nous verrons comment réduire les temps de chargement des jeux 
 %	ESSAY BODY
 %----------------------------------------------------------------------------------------
 
-\section*{Introduction}
+\section{Introduction}
 
 Les jeux vidéos comportent année après année un nombre grandissant de ressources nécessaires pour leur fonctionnement. Des textures aux modèles 3D, le poids de ces ressources augmente tout comme leur nombre, l'augmentation de la taille mémoire des machines permettant aux créateurs de jeux de charger plus de ressources à la fois. Cependant, augmenter la taille et le nombre des ressources a un prix, celui du temps de chargement. Dans ce mémoire nous verrons comment réduire ces temps de chargement en s'adaptant aux médias qui permettent de stocker les ressources du jeu, en tirant partie des capacités des processeurs, de l'espace disponible et de la mémoire RAM, des différents formats de compression, mais aussi des adaptations de gameplay qui peuvent permettre un chargement transparent pour l'utilisateur.
 
+\tableofcontents
+
 %------------------------------------------------
-\section*{Pourquoi avons nous besoin d'améliorer les temps de chargement ?}
+\newpage
+\subsection{Pourquoi avons nous besoin d'améliorer les temps de chargement ?}
 La quantité de mémoire disponible augmente régulièrement sur les postes des utilisateurs, ce qui permet aux concepteurs de jeux de proposer des jeux de plus en plus riches et chargés en éléments graphiques, ce qui demande beaucoup de ressources à créer, stocker, et donc charger. En améliorant les temps de chargement des programmes, nous pouvons faire passer cette quantité de données en mémoire plus rapidement, et donc avoir des jeux qui permettent de jouer rapidement, sans passer de longs instants devant un écran de chargement à plusieurs reprises.
 
-\section*{Comment influencer les temps de chargement}
+\subsection{Comment influencer les temps de chargement}
 Les temps de chargement peuvent être influencés de différentes manières.
 
 Nous pouvons améliorer les temps de chargement en utilisant des techniques de stockage qui varient en fonction du média sur lequel le jeu est enregistré. Par exemple, les temps d'accès étant plutôt long sur un cd-rom, il faut veiller à limiter le nombre d'accès aux ressources et penser à charger des éléments qui ne seront pas forcément affichés tout de suite, lors des premiers chargements si la mémoire le permet.
@@ -109,11 +112,11 @@ Enfin, une méthode pour cacher les chargements aux joueurs consiste à construi
 
 %------------------------------------------------
 \newpage
-\section*{Optimisations liées au matériel}
-\subsection*{Benchmark des différents supports de stockage}
+\section{Optimisations liées au matériel}
+\subsection{Benchmark des différents supports de stockage}
 Pour mieux comprendre comment organiser nos ressources et la façon de les charger en fonction du support de stockage destiné au jeu, nous devons d'abord étudier et comprendre les deux principaux facteurs des temps de chargement liés au matériel : la vitesse de transfert et le temps d'accès. Le temps d'accès représente le temps écoulé entre le moment où la demande d'accès aux données va être effectuée et le début du transfert de cette donnée. Par exemple sur un disque dur, le temps que celui ci va prendre pour positionner sa tête de lecture, faire tourner le disque à la bonne position et commencer à lire la donnée. Le taux de transfert est le nombre de données qu'il est capable de faire transiter du support de stockage à la mémoire, par seconde.
 
-\subsubsection*{Les CD-ROM}
+\subsubsection{Les CD-ROM}
 \begin{wrapfigure}{r}{0.4\textwidth}
 \begin{center}
 \includegraphics[width=0.38\textwidth]{images/cdrom.png}
@@ -153,14 +156,14 @@ Vitesse de transfert des lecteurs CD-ROM: \cite{hardware:cdromspeed}
 Comme nous pouvons le constater, les temps d'accès du lecteur CD-ROM sont assez élevé. Si nous devons charger 50 petits fichiers sur un lecteur 16x, nous ajoutons inutilement 4 secondes et demi de temps de chargement. Il convient donc d'encapsuler ces 50 fichiers dans un seul, de le charger d'une traite puis de faire la séparation des fichiers en mémoire.
 C'est pour cette raison que sur les CD-ROMs de jeux nous trouvons souvent que peu de fichiers, mais qui prennent une grande partie de l'espace.
 
-\subsubsection*{Lecteur DVD-ROM}
+\subsubsection{Lecteur DVD-ROM}
 Le DVD-ROM a une vitesse 9 fois supérieure à celle d'un CD-ROM,\cite{hardware:dvdromspeed} pour une capacité allant de 4.7Go à 17.08Go (ce dernier étant très rare). Le temps d'accès aux données sur un DVD-ROM est d'environ 100ms pour les plus rapides, ce temps variant en fonction des lecteurs. Nous retrouvons donc avec les DVD-ROM le même problème qu'avec les CD-ROM : le temps d'accès au données élevé. Le taux de transfert et la quantité de données qu'il est possible de stocker sur celui ci en fait cependant un successeur de choix au CD-ROM, améliorant au passage les temps de chargement grâce à sa vitesse de lecture améliorée.
 
 \newpage
-\subsubsection*{Lecteur BD-ROM}
+\subsubsection{Lecteur BD-ROM}
 Le BD-ROM est capable de transférer les données de 4.5Mo par seconde (x1) à 72Mo par seconde (x16)\cite{hardware:bdromspeed} et peut stocker entre 25Go et 50Go de données. Cela représente 50 fois la vitesse d'un CD-ROM. Bien que ses temps d'accès soient similaires voir plus grands que pour les DVD-ROMs, sa vitesse de transfert lui permet cependant de proposer des temps de chargement plus rapides, les données étant stockées sous forme de flux dans l'ordre d'utilisation comme pour les autres supports sous forme de disque, sa capacité de stockage permet en plus d’alléger le travail du processeur en proposant des données moins compressées.
 
-\subsubsection*{Le Disque Dur}
+\subsubsection{Le Disque Dur}
 \begin{wrapfigure}{r}{0.4\textwidth}
 \begin{center}
 \includegraphics[width=0.38\textwidth]{images/hdd.png}
@@ -171,21 +174,21 @@ Le disque dur est le support de stockage le plus utilisé sur PC. Présent depui
 
 Il existe 5 vitesses pour les disques durs, qui sont le nombre de rotation effectuées par le disque, par minute. Les vitesses de disque les plus répandues sont celles à 5400 tours/minute et 7200 tours/minute (respectivement 5.55ms et 4.16ms de temps d'accès moyen).\cite{hardware:hddspeed}
 
-Les taux de transfert des disques à 7200 tours par minute en 2010 sont en moyenne de 125Mo par seconde. Comparé aux supports de stockage au format disque, le disque dur les surpasse tous. Cependant des problèmes peuvent intervenir sur les disques durs comme le corruption de données, ou la perte de vitesse à cause de la fragmentation qui peut intervenir sur certains systèmes de fichiers. Séparer les fichiers sur ce type de disque pour ne pas avoir de chargement sous forme de flux peut donc s'avérer pénalisant sur un disque fortement fragmenté.
+Les taux de transfert des disques à 7200 tours par minute en 2010 sont en moyenne de 125Mo par seconde. Comparé aux supports de stockage au format optique, le disque dur les surpasse tous. Cependant des problèmes peuvent intervenir sur les disques durs comme la corruption de données, ou la perte de vitesse à cause de la fragmentation qui peut intervenir sur certains systèmes de fichiers. Séparer les fichiers sur ce type de disque pour ne pas avoir de chargement sous forme de flux peut donc s'avérer pénalisant sur un disque fortement fragmenté.
 
 \newpage
-\subsubsection*{Le SSD}
+\subsubsection{Le SSD}
 Le SSD est le support de stockage qui remplace peu à peu les disques durs. Ses taux d'accès étant très faible (en dessous de 0.1ms) et sa capacité de transfert élevé (entre 100 et 550Mo par seconde)\cite{hardware:ssdspeed}, il permet d'avoir peu voire pas de chargement visible pour l'utilisateur dans les jeux vidéos. 
 
 Les caractéristiques du SSD sont proches de celles des cassettes de jeu vidéo utilisées sur les machines avant l'ère du CD. Ce type de support permet d'avoir des jeux où les chargements sont transparents pour l'utilisateur. De plus, la fragmentation des fichiers n'a aucun effet sur un disque SSD, les données peuvent donc être séparées pour minimiser le chargement de ressources inutiles et permettre un chargement à la volée rapide.
 
-\subsubsection*{Multiplier les supports}
+\subsection{Multiplier les supports}
 Si nous avons vu la supériorité des disques durs et SSD par rapport aux supports au format disque, nous pouvons quand même tirer partie du lecteur de disque pour améliorer encore les performances. Ainsi, nous pouvons nous servir du DVD/BD pour installer le jeu sur le disque dur, et garder une partie du disque qui servira lorsque le jeu sera lancé. Cela permettra d'accéder aux données à la fois du disque dur et sur le DVD/BD dans le jeu. C'est cette méthode qui est employée actuellement sur console, profitant du fait qu'elles soient équipées en disque dur pour réduire les temps de chargement.
 
 %------------------------------------------------
 \newpage
-\section*{Techniques d'optimisation}
-\subsection*{Généralités}
+\section{Techniques d'optimisation}
+\subsection{Généralités}
 Il existe 3 façons majeures de charger les données nécessaires à un jeu en mémoire.
 
 La première est de charger les données au démarrage du niveau ou du jeu et de les garder en mémoire tout le long du jeu. C'est la meilleure solution pour les ressources qui seront nécessaires à toutes les étapes du jeu, ou pour les ressources critiques du jeu sans lesquelles le jeu ne pourra pas tourner (cela permet de faire une vérification par la même occasion). Puisque ces données seront chargées quoi qu'il arrive, nous pouvons optimiser le temps de chargement en les chargeant dès le menu ou dès l'apparition des sponsors au début du jeu.
@@ -195,7 +198,7 @@ La deuxième façon est de charger les données nécessaires en fonction de la p
 La troisième façon est basée sur les événements : par exemple commencer à charger une zone lorsque le joueur sélectionne un objet qui lui permet de s'y téléporter, charger une séquence d'animation quand le joueur parle à un personnage qui va la déclencher, etc.
 
 \newpage
-\subsection*{Stockage des données}
+\subsection{Stockage des données}
 Pour améliorer les temps de chargement, les données sont organisées sur les disques en fonction de leurs secteurs et généralement dans un seul fichier d'archive (afin de minimiser les appels aux fonctions open et close du système d'exploitation, qui sont relativement lentes).
 
 
@@ -221,7 +224,7 @@ Une technique pour réduire cette perte est d'aligner les fichiers sur les secte
 \end{figure}
 
 \newpage
-\subsection*{Organisation et duplication des fichiers}
+\subsection{Organisation et duplication des fichiers}
 La technique la plus utilisée dans les jeux à monde ouverts disponibles sur disque optique est la technique du streaming, ou chargement par flux. Les données sont organisées sur le disque de manière à être chargées les unes à la suite des autres pour que le lecteur de disque puisse lire les données sans effectuer un nouveau tour pour se repositionner.
 
 Si nous prenons l'exemple de Just Cause, les données du terrain sont séparées sur le disque sous forme de patch, contenant la heightmap du terrain, les textures et les données du mesh. Compte tenu du fait qu'ils avaient encore de l'espace disponible sur le disque optique, ils ont stocké les données du terrain deux fois: une fois ordonné en x vers z et une fois en z vers x. Ainsi les données peuvent être chargées sous forme de flux en fonction de la direction du joueur \cite{industry:justcause-streaming}.
@@ -230,7 +233,7 @@ Ainsi nous remarquons qu'une technique d'optimisation de chargement peut passer 
 
 Une technique pour constituer les fichiers de flux est de placer des logs dans le code pour voir dans quel ordre les ressources sont chargées, ainsi il suffira de les placer dans le même ordre dans le fichier de flux.
 \newpage
-\subsection*{Chargement en tâche de fond}
+\subsection{Chargement en tâche de fond}
 Le chargement des fichiers nécessaires pour mettre en place un jeu de type Open World peut être immédiat comme prendre plusieurs secondes pour être accompli. Ce type de jeu ne présentant normalement pas d'écran de chargement, il ne faut pas que cette tâche soit bloquante pour l'utilisateur du jeu, il faut donc prévoir un chargement en tâche de fond, qui n'altère pas l'expérience de jeu sur la machine utilisée pour jouer.
 
 Pour effectuer ce chargement de la manière la plus fluide possible, l'équipe de Dungeon Siege l'a découpé en 3 étapes distinctes\cite{industry:dungeonsiege-streaming}: 
@@ -244,7 +247,7 @@ Ce découpage permet d'annuler le chargement en cours de route si le joueur déc
 Le chargement en tâche de fond prend aussi des ressources processeur, utilisée par le jeu en tâche principale et ce à cause notamment de la compression des fichiers (voir section Optimisation par compression). Il convient donc de limiter cet usage pour laisser au jeu le plus possible de capacité de calcul pour que le chargement ne fasse pas chuter les taux de rafraichissement.
 
 \newpage
-\subsection*{Définir des zones}
+\subsection{Définir des zones}
 Pour permettre un jeu fluide et éviter les écrans de chargements, il convient d'anticiper les déplacements du joueur et de connaître les zones qu'il peut potentiellement visiter. Ainsi, il est utile de connaître la zone dans laquelle est placé le joueur ainsi que les zones qui l'entourent. Lorsqu'un joueur visitera une zone, les zones d'à côté seront chargées en tâche de fond et celles qui sont éloignées seront déchargées ou gardées uniquement sous forme simplifiée.
 
 \begin{wrapfigure}{l}{0.5\textwidth}
@@ -260,8 +263,8 @@ Un second problème se pose dans le cas ou un déplacement instantané peut surv
 
 %------------------------------------------------
 \newpage
-\section*{Optimisation par compression}
-\subsection*{Généralités}
+\section{Optimisation par compression}
+\subsection{Généralités}
 La compression de données regroupe un ensemble de techniques permettant de réduire considérablement le volume de données avec ou sans perte d'information. On utilise généralement des algorithmes qui permettent de compresser les données. Si l'algorithme utilisé est sans perte, la totalité des données compressées est récupérée lors de la décompression tandis que si l'algorithme est avec perte, seule une partie des données originales est récupérée (on essaie alors de garder les informations pertinentes). La perte reste minime en fonction des algorithmes utilisés ce qui rend la reconstruction de l'information raisonnable et satisfaisante. 
 
 \begin{figure}[!h]%
@@ -279,7 +282,7 @@ Dans les jeux vidéo de nombreux éléments sont utilisés et doivent être stoc
 Les données des images et des vidéos sont mesurés par un nombre d'unité binaire (bits), c'est pourquoi on parle de vitesse de transfert de bits (bit rate) comme étant le paramètre principal lors de la compression de données. 
 
 \newpage
-\subsection*{Compression des images}
+\subsection{Compression des images}
 Les images sont très utilisées et en grande quantité dans les jeux vidéo. C'est pourquoi la compression joue un rôle très important. Ils existent plusieurs algorithmes de compression qui permettent de comprimer les images. Bien entendu, certaines méthodes seront plus adaptées pour un type d'image particulier que pour un autre. 
 
 Voici les différents types d'images et leurs caractéristiques : 
@@ -305,7 +308,7 @@ Quelques remarques concernant ces différents formats d'image :
 
 Voici les résultats récupérés dans le document "Comparison of different image compression formats"\cite{compression:images-compression-formats} présentant les tests de Paula Aguilera concernant les différentes type de compressions d'image :
 
-\subsubsection*{Compression sans perte}
+\subsubsection{Compression sans perte}
 Pour une image de 24 bit de profondeur de couleur pesant 696KB dans un format BMP contenant de nombreuses zones de couleur homogène.
 
 \begin{center}
@@ -337,7 +340,7 @@ Pour une image en niveau de gris pesant 257KB dans un format BMP contenant beauc
 	\end{tabular}
 \end{center}
 
-\subsubsection*{Compression avec perte}
+\subsubsection{Compression avec perte}
 
 Pour une image de 24 bit de profondeur de couleur pesant 768KB dans un format BMP contenant des couleurs vives et des textures. Pour une compression au format JPEG, on peut choisir le degré de qualité que l'on souhaite conserver lors de la compression. Il s'agit d'un nombre entre 1 et 100, plus le chiffre est grand plus le taux de compression sera faible et donc plus la qualité d'image sera élevée. Voici les résultats des tests avec une compression au format JPEG avec des niveaux définis à 100, 50, 10 et 1.
 
@@ -363,7 +366,7 @@ De manière générale, lors d'une compression le format PNG est un très bon ch
 
 Il faut ensuite s'intéresser au temps de chargement nécessaire pour décompresser le fichier en mémoire pour pouvoir l'utiliser et cette étape du chargement sollicite le processeur.
 
-\subsection*{Compression des meshes}
+\subsection{Compression des meshes}
 Les jeux vidéo utilisent généralement des meshes (maillages) représentant toutes les formes possibles (personnages, bâtiment, véhicules, objets, etc.). Dans le domaine des jeux vidéo, on préfère avoir des maillages composés uniquement de triangles pour leur simplicité. Le nombre de polygones que les machines peuvent afficher est limité, c'est pourquoi on utilise les maillages. Ces formes sont plus ou moins complexes et doivent souvent être compressées pour des questions de volume et de transfert. Pour des jeux en 3D, une carte graphique peut afficher des milliers de polygones (en 2005, une carte graphique pouvait afficher 180 millions de triangles par secondes)\cite{compression:meshes}.
 
 \begin{figure}[!h]%
@@ -378,7 +381,7 @@ Plus le nombre de polygones que l'on souhaite afficher à l'écran est élevé, 
 
 La compression des meshes permet aussi d'obtenir des fichiers moins volumineux. On distingue toujours la compression avec ou sans perte. La première insiste sur le fait que certains détails seront supprimés avant la compression, il s'agit en général d'éléments jugés non perceptibles par l’œil humain lors de la visualisation. 
 
-\subsection*{Compression des vidéos}
+\subsection{Compression des vidéos}
 
 
 
@@ -387,8 +390,8 @@ La compression des meshes permet aussi d'obtenir des fichiers moins volumineux. 
 
 %------------------------------------------------
 \newpage
-\section*{Optimisation par le level design}
-\subsection*{Conception du monde}
+\section{Optimisation par le level design}
+\subsection{Conception du monde}
 Une autre façon d'améliorer les temps de chargement est d'adapter le level design afin de satisfaire les exigences des plate formes visées. Par exemple, si nous prenons la carte d'un jeu à monde ouvert comme GTA 3, sorti sur Playstation 2 et PC nous pouvons voir que les différentes parties de la ville sont organisées de façon à laisser un 'couloir' disponible pour que les chargements liés aux déplacements du joueur puissent avoir lieu.
 
 \begin{figure}[!h]%
@@ -400,7 +403,7 @@ Une autre façon d'améliorer les temps de chargement est d'adapter le level des
 Cependant, les chargements sont appliqués de manière assez brutale, le jeu étant bloqué en attendant la réception des données. Rockstar a donc échoué à proposer un chargement fluide malgré l'adaptation du level design, cependant cette technique leur a permis d'imposer un chargement dans des zones sans intérêt pour que le joueur puisse profiter d'un jeu fluide en dehors de ces zones tampons.
 
 \newpage
-\subsection*{Intégration au monde}
+\subsection{Intégration au monde}
 Les chargements peuvent être intégrés au jeu et complètement transparents pour l'utilisateur. Si nous prenons l'exemple de Metroid Prime sur Gamecube, le jeu très détaillé nécessite de charger beaucoup de données. Cependant, il ne présente aucun écran de chargement. Les développeurs ont eu une idée astucieuse pour camoufler ces chargements et savoir dans quelle zone le joueur va se diriger pour charger uniquement le nécessaire.
 
 \begin{wrapfigure}{l}{0.5\textwidth}
@@ -423,9 +426,11 @@ Visuellement, le joueur comprend la situation: une porte bleue est une porte qui
 Ce mécanismes se retrouvent dans de nombreux autres jeux, où un obstacle nous fait face (souvent une porte ou un portail) et ne s'ouvre que lorsque la zone suivante est complètement chargée.
 Dans un monde ouvert, cela peut poser un problème puisque cette méthode semble plus adaptée aux jeux découpés en salles. Cependant nous pouvons appliquer ce mécanismes aux habitations qui bordent les routes, aux grottes bloquées par un rocher à exploser, etc.
 
+
 %------------------------------------------------
 
-%\section*{Conclusion}
+\newpage
+\section{Conclusion}
 
 %----------------------------------------------------------------------------------------
 %	BIBLIOGRAPHY
