@@ -93,10 +93,10 @@ Les jeux vidéos comportent année après année un nombre grandissant de ressou
 
 %------------------------------------------------
 \newpage
-\subsection{Pourquoi avons nous besoin d'améliorer les temps de chargement ?}
+\subsection[Pourquoi améliorer les temps de chargement]{Pourquoi avons nous besoin d'améliorer les temps de chargement}
 La quantité de mémoire disponible augmente régulièrement sur les postes des utilisateurs, ce qui permet aux concepteurs de jeux de proposer des jeux de plus en plus riches et chargés en éléments graphiques, ce qui demande beaucoup de ressources à créer, stocker, et donc charger. En améliorant les temps de chargement des programmes, nous pouvons faire passer cette quantité de données en mémoire plus rapidement, et donc avoir des jeux qui permettent de jouer rapidement, sans passer de longs instants devant un écran de chargement à plusieurs reprises.
 
-\subsection{Comment influencer les temps de chargement}
+\subsection[Comment les influencer]{Comment influencer les temps de chargement}
 Les temps de chargement peuvent être influencés de différentes manières.
 
 Nous pouvons améliorer les temps de chargement en utilisant des techniques de stockage qui varient en fonction du média sur lequel le jeu est enregistré. Par exemple, les temps d'accès étant plutôt long sur un cd-rom, il faut veiller à limiter le nombre d'accès aux ressources et penser à charger des éléments qui ne seront pas forcément affichés tout de suite, lors des premiers chargements si la mémoire le permet.
@@ -248,18 +248,40 @@ Le chargement en tâche de fond prend aussi des ressources processeur, utilisée
 
 \newpage
 \subsection{Définir des zones}
-Pour permettre un jeu fluide et éviter les écrans de chargements, il convient d'anticiper les déplacements du joueur et de connaître les zones qu'il peut potentiellement visiter. Ainsi, il est utile de connaître la zone dans laquelle est placé le joueur ainsi que les zones qui l'entourent. Lorsqu'un joueur visitera une zone, les zones d'à côté seront chargées en tâche de fond et celles qui sont éloignées seront déchargées ou gardées uniquement sous forme simplifiée.
+Pour permettre un jeu fluide et éviter les écrans de chargements, il convient d'anticiper les déplacements du joueur et de connaitre les zones qu'il peut potentiellement visiter. Ainsi, il est utile de connaitre la zone dans laquelle est placé le joueur ainsi que les zones qui l'entourent. Lorsqu'un joueur visitera une zone, les zones d'à côté seront chargées en tâche de fond et celles qui sont éloignées seront déchargées ou gardées uniquement sous forme simplifiée.
 
 \begin{wrapfigure}{l}{0.5\textwidth}
 \begin{center}
 \includegraphics[width=0.45\textwidth]{images/patch-system-three.png}
 \end{center}
-\caption{Systeme de patch}
+\caption{Système de patch}
 \end{wrapfigure}
 
 La figure ci contre représente un système de patch sous forme d'arbre avec plusieurs niveaux de détail. Au centre, les patch sont détaillés et découpés en petites zones et sont chargées avec tout leur contenu en mémoire. Les cellules moyennes qui sont plus éloignées du joueur, sont elles chargées de manière incomplète (seul les données importantes au rendu à moyenne distance: données terrain, textures, habitations, arbres, etc.). Les patch plus gros sont eux chargés grossièrement, pour avoir un rendu simpliste nécessitant peu de ressources. Ainsi en fonction du déplacement du joueur, les zones autour de lui vont changer en suivant la même direction pour passer en mode détaillé, moyen ou léger. Un problème peut survenir dans le cas où le joueur se déplace de manière rapide. Dans ce cas, seul les zones contenues dans le frustrum pourront passer en détaillé, tandis que les celles derrière le véhicule et sur les côtés pourront passer plus rapidement en mode léger.
 
 Un second problème se pose dans le cas ou un déplacement instantané peut survenir (téléportation). Pour résoudre en partie ce problème, il convient de trouver les zones dans lesquelles le joueur va pouvoir se téléporter et de les charger en mode moyen à l'avance si l'espace mémoire le permet, même si elles ne sont pas voisines. Ainsi le joueur pourra être téléporté et la zone finira de charger du mode moyen au mode détaillé en cours de route. Ce processus peut intervenir à proximité d'un portail de téléportation, ou lorsque le joueur est dans son inventaire et possède des objets qui lui permettent de se téléporter.
+
+\newpage
+\subsection{Prioriser les chargements}
+Une technique pour rendre les chargements le plus discret possible serait de définir un ordre de priorité pour les ressources et objets à afficher. 
+
+Par exemple, nous pouvons retarder le chargement et l'apparition d'un objet qui n'a qu'une utilité esthétique dans notre jeu ou notre scène. Les objets à charger en premier lieux sont ceux avec lequel le joueur peut entrer en interaction (levier, bouton sur lequel le joueur doit appuyer, porte, etc.) pour qu'il puisse continuer à avancer dans avoir à attendre que les objets apparaissent ou qu'il ne se retrouve pas bloqué sans comprendre ce qu'il se passe. Les murs et le terrain, même s'ils ne sont pas des objets interactifs doivent être chargés également car sans eux le joueur se déplacerait dans le vide et n'aurait aucun moyen de se repérer dans l'espace.
+
+Les objets à charger en suite sont les NPC, ou personnages non joueur: un animal dans le décors que le joueur peut tuer pour récolter des ressources, ou un personnage donneur de quête par exemple. Ceux ci ne sont pas critiques pour l'avancée du joueur et souvent nécessitent un certain nombre de ressources (modélisation, sons et animations) ainsi il convient de les charger en second lieux. 
+
+Viennent en dernier lieux les objets de décoration, la végétation, et les sons. Cela ne pose pas de problème de permettre au joueur d'avancer avant d'entendre ses bruits de pas par exemple. Avoir différentes textures de fleur pour un sol en plein air n'est pas important pour le joueur, tout comme des tuyaux qui viendraient joncher un couloir. Les charger en dernier permet d'avoir un affichage rapide des niveaux et de réduire au maximum les temps d'attente du joueur.
+
+\newpage
+\subsection{Préparer des billboards}
+Les billboards sont les textures qui remplacent les objets 3D au loin dans les jeux, pas exemple les arbres. Ils font toujours face à la caméra du joueur et sont généralement rafraichies que lorsque le joueur se déplace d'une certaine distance par rapport à sa position de base lorsque le billboard a été calculé la première fois. 
+
+\begin{figure}[!h]%
+\includegraphics[width=\columnwidth]{images/bf3_billboards.png}%
+\caption{Billboards dans Battlefield 3 (arbres au loin)}%
+\label{}%
+\end{figure}
+
+Nous pouvons nous inspirer de cette technique pour améliorer les temps de chargement, en préparant au préalable des billboards pour certains objets 3D non prioritaires qui seront alors chargés en premier lieu sous la forme de billboards. Si nous prenons l'exemple d'un joueur qui entre dans une maison et se dirige à proximité de la cuisine, nous pouvons lui afficher les tasses et couverts qui sont posés sur la table sous la forme d'un billboard, et si le joueur s'attarde dans cette même cuisine ou si le CPU le permet et qu'il n'y a pas d'autres objets plus prioritaires à charger dans la queue, nous chargeons le vrai objet 3D.
 
 %------------------------------------------------
 \newpage
