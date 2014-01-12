@@ -382,8 +382,79 @@ Plus le nombre de polygones que l'on souhaite afficher à l'écran est élevé, 
 La compression des meshes permet aussi d'obtenir des fichiers moins volumineux. On distingue toujours la compression avec ou sans perte. La première insiste sur le fait que certains détails seront supprimés avant la compression, il s'agit en général d'éléments jugés non perceptibles par l’œil humain lors de la visualisation. 
 
 \subsection{Compression des vidéos}
+Dans la plupart des jeux, des cinématiques sont utilisées pour mettre en scène l'histoire du jeu. Elles peuvent être réalisées directement avec le moteur du jeu à l'aide d'animations. Souvent, il s'agit plutôt de vidéos en images de synthèses. On les retrouve généralement au démarrage du jeu avant l'écran titre mais aussi avant chaque mission pour présenter la situation. Ces vidéos doivent donc être chargée puis diffusée. Tout comme pour le chargement des objets 3D et les images on peut penser qu'il faut un certain temps à la machine pour effectuer cette action. 
 
+Les vidéos prennent beaucoup de place sur le support, ceci est dû à la quantité d'informations qu'elles contiennent. Même si les machines d'aujourd'hui sont de plus en plus performantes il est encore difficile de penser que l'on peut stocker toutes les données d'un jeu sans les compresser. Dans ce cas, il faudrait des dizaines de gigaoctet (voire des centaines) d'espace mémoire pour stocker ces données sur le support de stockage. De plus, le chargement d'une telle quantité d'informations risquerait de prendre énormément de temps, ce qui ruinerait totalement l'expérience de jeu. On se rappelle alors des premiers jeux de la Sony Playstation qui demandaient des temps de chargement élevés pour parvenir à récupérer les données nécessaires pour la scène de jeu en cours. Ce problème s'appliquait aussi aux vidéos qui devaient être chargées en mémoire, lues, puis déchargés pour laisser place au chargement des autres données.
 
+Il est donc plus judicieux de réussir à réduire la taille des données et ce par la compression mais aussi la décompression lors du chargement. En ce qui concerne les vidéos, on parlera aussi de méthodes de codage vidéo.
+
+Le but est donc de choisir le meilleur format de compression. Voici un tableau montrant le standard de compression vidéo, dont le format CIF est la base d'une hiérarchie de format.
+
+\begin{center}
+	\begin{tabular}{|l|p{0.25\columnwidth}|c|l|}
+		\hline
+		Format & Résolution Luminance (H x V) & Bits par image & Application\\
+		\hline
+		Sub-QCIF&128 x 96&147 456&Vidéo mobile\\
+		Quarter CIF&176 x 44&304 128&Vidéo conférence\\
+		CIF&352 x 288&147 456&Monitoring vidéo\\
+		4CIF&704 x 576&4 866 048&TV, DVD\\
+		720i50&1280 x 720&11 059 200&HD TV\\
+		1080i50&1920 x 1080&24 883 200&HD DVD\\
+		\hline
+	\end{tabular}
+\end{center}
+
+La compression d'une vidéo consiste en fait à encoder les données qu'elle contient pour éliminer les parties redondantes ou inutiles qui ne sont pas nécessaires à la récupération de la vidéo d'origine lors de la décompression. L'encodage est définit par quatre modules : la prédiction, la transformation, la quantification et le codage entropique. Voici les étapes effectuées lors de l'encodage de la vidéo \cite{compression:video} :
+
+\begin{itemize}
+  \item On fournit à l'encodeur la vidéo d'origine.
+	\item La prédiction exploite la redondance entre les trames voisines, ce qui lui permet de construire une prédiction des trames suivantes.
+	\item Le module de transformation convertit le résultat de la prédictions : transformation de la trame en coefficients.
+	\item Les coefficients sont quantifiés en série de coefficients significatifs qui représentent alors de manière plus compacte la trame résiduelle d'entrée.
+	\item Les valeurs quantifiées sont finalement compressées par le codage entropique.
+\end{itemize}
+
+En ce qui concerne le rôle du décodeur, il reconstruit la vidéo à partir de la séquence obtenue lors de l'encodage.
+
+\subsubsection{Prédiction}
+Dans une vidéo, on constate que deux images successives sont relativement identiques. En effet, si la vidéo présente l'animation d'un personnage dans un décor particulier, on peut observer que certains éléments restent inchangés d'une image à l'autre, seul le personnage ou une partie de son corps bouge. Cela permet de définir quelles informations sont redondantes ou non. Ainsi, le module de prédiction obtient un résidu définissant la différence entre les différentes trames.
+
+\subsubsection{Transformation}
+La transformation permet de compacter la trame obtenue suite à la prédiction. Il existe plusieurs transformées permettant d'effectuer cette tâche, par exemple la Transformée Cosinus Discrète (DCT) qui se base sur des blocs et la Transformée Ondelette Discrète (DWT) basée sur une image entière. Il semblerait que la DWT soit plus performantes que la DCT mais elle nécessite trop de mémoire.
+
+\subsubsection{Quantification}
+La transformation permet d'obtenir des coefficients qui ont des valeurs parfois très proches. La quantification est alors utilisée pour garder un petit nombre de coefficients significatif. Il s'agit alors de la représentation compacte de la trame résiduelle.
+
+\subsubsection{Codage entropique}
+Les coefficients quantifiés doivent encore être codées pour les compresser encore plus avec le stockage et la transmission. Le but du codage entropique est d'assigner des codes courts aux symboles les plus récurrents. Le codage Huffman modifié et le codage arithmétique sont deux types de codage entropique.
+
+\begin{figure}[!h]%
+\includegraphics[width=\columnwidth]{images/codage_huffman.jpg}%
+\caption{Codage Huffman}%
+\label{}%
+\end{figure}
+
+\newpage
+
+Une fois ces étapes réalisées, le stockage peut être effectué. Lorsque la vidéo est demandée par le jeu, le programme charge la vidéo, il doit alors décoder la séquence obtenue lors de la compression. Le temps de décompression est variable en fonction de la taille des données à traiter. 
+
+Les organisations internationales de standardisation l'UIT-T et l'ISO/IEC ont développés des standards de compression vidéo tel que le MPEG-4, format utilisé par les jeux vidéo. Une amélioration de ce format, le MPEG-4 H.264 permet lors de la compression d'obtenir un codec plus performant.
+
+Voici les différentes versions du format MPEG :
+
+\begin{center}
+	\begin{tabular}{|p{0.2\columnwidth}|p{0.15\columnwidth}|p{0.55\columnwidth}|}
+		\hline
+		Format & Période de développement & Application\\
+		\hline
+		MPEG-1&1988-1996&Lecteur VHS, stockage de sons et d'image pour CD interactifs\\
+		MPEG-2&1990-2000&Diffusion télévisuelle, réseaux et support DVD\\
+		MPEG-4&1993-2003&Consoles de jeux vidéo, réseaux sans fil, téléphone cellulaire, satellite\\
+		H.26X et H.264 AVC (Advanced Video Coding)&1999-2003&Application de communication à très faible débit de transmission (téléphonie, jeux en ligne, réseaux sans fil)\\
+		\hline
+	\end{tabular}
+\end{center}
 
 %------------------------------------------------
 %\section*{Optimisation par algorithme}
