@@ -283,6 +283,15 @@ Les billboards sont les textures qui remplacent les objets 3D au loin dans les j
 
 Nous pouvons nous inspirer de cette technique pour améliorer les temps de chargement, en préparant au préalable des billboards pour certains objets 3D non prioritaires qui seront alors chargés en premier lieu sous la forme de billboards. Si nous prenons l'exemple d'un joueur qui entre dans une maison et se dirige à proximité de la cuisine, nous pouvons lui afficher les tasses et couverts qui sont posés sur la table sous la forme d'un billboard, et si le joueur s'attarde dans cette même cuisine ou si le CPU le permet et qu'il n'y a pas d'autres objets plus prioritaires à charger dans la queue, nous chargeons le vrai objet 3D.
 
+
+\newpage
+\subsection{Utiliser du LOD}
+Le LOD signifie Level of Detail et est une technique qui permet d'améliorer les performances graphiques en fonction de la distance des objets. Ainsi les objets qui sont situés le plus loin sont affichés de manière rudimentaire, avec des textures légères et très peu de polygones et d'animation.
+
+Nous pouvons nous servir de cette technique pour améliorer les chargements, en ne chargeant au départ que les ressources qui sont en format léger, et charger les versions complètes des objets une fois dans le jeu si l'utilisation du processeur le permet. Cette technique ressemble à celle des zones décrit plus haut, qui consiste à charger des versions légères en fonction de la distance des objets par rapport aux joueurs.
+
+Cependant ici nous chargeons même les zones à proximité du joueur en mode léger, dès le départ afin de réduire le plus possible le premier écran de chargement. Ceci est une technique acceptable pour certains types de jeu où le décor ne joue pas un rôle important. Cependant si nous souhaitons mettre l'accent sur les graphismes ou si nous ne voulons pas que le joueur ressente ce chargement qui peut être plus ou moins long et plus ou moins dérangeant selon les sensibilités, il faudra éliminer cette possibilité.
+
 %------------------------------------------------
 \newpage
 \section{Optimisation par compression}
@@ -538,7 +547,7 @@ Le format OGG est le plus souvent utilisé par les jeux vidéo du fait qu'il s'a
 		\cline {2-3}
 			& UIT-T & G.711, G.719, G.722, G.722.1, G.722.2, G.723, G.723.1, G.726, G.728, G.729, G.729.1, G.729a\\
 		\cline {2-3}
-			& Autres & AC3, AMR, Apple Lossless, ATRAC, CELT, FLAC, iLBC, Monkey's Audio, µ-law, Musepack, Nellymoser, OptimFROG, Opus, RealAudio, RTAudio, SHN, Siren, Speex, TAK, Vorbis, WavPack, WMA\\
+			& Autres & AC3, AMR, Apple Lossless, ATRAC, CELT, FLAC, iLBC, Monkey's Audio, u-law, Musepack, Nellymoser, OptimFROG, Opus, RealAudio, RTAudio, SHN, Siren, Speex, TAK, Vorbis, WavPack, WMA\\
 		\hline
 		Image & ISO/CEI/UIT-T & JPEG, JPEG 2000, JPEG-LS, JBIG, JBIG2, PNG, WBMP\\
 		\cline {2-3}
