@@ -478,6 +478,75 @@ Voici les différentes versions du format MPEG :
 	\end{tabular}
 \end{center}
 
+Le MPEG-4 est un format standard de compression vidéo souvent utilisé dans les jeux vidéo. Les performances du codec au niveau de la compression et de la vitesse de transmission en font un choix efficace. 
+
+On peut supposer que lorsqu'une vidéo est lue pendant le jeu, un programme permet de charger en fond les données de la séquence de jeu qui suit. Cette technique peut être efficace pour optimiser le temps de chargement. Ainsi le joueur pourra jouer directement une fois la vidéo terminée.
+
+\subsection{Compression des sons}
+
+Il existe de nombreux formats de compression audio. Comme pour toutes compressions de données, elle peuvent être avec ou sans perte. Dans tous les cas, le but est de choisir le format dans lequel le taux de compression et la qualité sont satisfaisantes, mais on souhaite aussi que la vitesse de transmission soit la plus rapide possible.
+
+Dans les jeux vidéo, il existe des sons pour presque tous les éléments : décors, objets, personnages, actions, environnement, etc. Le jeu doit souvent lancer plusieurs sons simultanément pour cet différents éléments. C'est pourquoi il faut que la machine puisse charger plusieurs sons à la fois et ce rapidement. Une technique consisterait à charger en mémoire les sons les plus utilisés à un moment donné du jeu, pour pouvoir les jouer immédiatement lorsqu'ils sont appelés, mais cette méthode nécessite du matériel performant capable de stocker une grande quantité d'informations en mémoire.
+
+Il est donc préférable de trouver le format de compression idéal pour que celle-ci soit la plus efficace, avec le moins de perte possible et avec décompression qui se fasse rapidement.
+
+Voici un tableau réunissant quelques formats de compression audio :
+
+\begin{center}
+	\begin{tabular}{|p{0.2\columnwidth}|p{0.2\columnwidth}|p{0.25\columnwidth}|p{0.25\columnwidth}|}
+		\hline
+		Format & Algorithme & Vitesse de transfert (kbits/s) & Latence (ms)\\
+		\hline
+		ALAC & Sans perte & - & -\\
+		FLAC & Sans perte & - & 4.3 - 92\\
+		Monkey's audio & Sans perte & - & -\\
+		RealAudio & Sans perte & - & - \\
+		True Audio & Sans perte & - & - \\
+		WavPack & Sans perte & - & - \\
+		Windows Media Audio & Sans perte & - & >100\\
+		\hline
+		AAC & MDCT-Hybrid, Subband & 8 - 529 & 20 - 405\\
+		ATRAC1 & MDCT-Hybrid, Subband & 292 & >100\\
+		ATRAC3 & MDCT-Hybrid, Subband & 66 - 132 & >100\\
+		ATRAC3plus & MDCT-Hybrid, Subband & 48 - 352 & >100\\
+		MP3 & MDCT-Hybrid, Subband & 8 - 320 & >100\\
+		Musepack & Subband & 3 - 1300 & - \\
+		OGG Vorbis & MDCT & 8 - 768 & >100\\
+		Windows Media Audio & MDCT & 8 - 768 & >100\\
+		\hline
+	\end{tabular}
+\end{center}
+
+Le format OGG est le plus souvent utilisé par les jeux vidéo du fait qu'il s'agisse d'un format ouvert et libre. Le MP3 est aussi un format très utilisé. On constate d'après le tableau que la vitesse de transfert est plus élevé avec le format OGG. Ce format est une compression obtenue à partir de différents algorithmes générant un fichier son qui, lorsqu'il est décompressé par le décodeur, reste fidèle au son d'origine pour l'oreille humaine. En effet, en utilisant ce format audio, notre oreille parvient difficilement à percevoir les différences entre le fichier compressé et le fichier original malgré la perte d'informations générée par la compression.
+
+\subsection{Tableau des formats de compression multimédia}
+
+\begin{center}
+	\begin{tabular}{|p{0.1\columnwidth}|p{0.2\columnwidth}|p{0.6\columnwidth}|}
+		\hline
+		Type & Norme & Formats\\
+		\hline
+		Vidéo & ISO/CEI & MJPEG, Motion JPE 2000, MPEG-1, MPEG-2, MPEG-4 ASP, MPEG-4/AVC, HEVC\\
+		\cline {2-3}
+			& UIT-T & H.120, H.261, H.262, H.263, H.264, HEVC\\
+		\cline {2-3}
+			& On2 & VP3, VP5, VP6, VP7, VP8, VP9\\
+		\cline {2-3}
+			& Autres & AMV, AVS, Bink, Cinepak, Dirac, Indeo, jpg.rem, Pixlet, RealVideo, rem, RTVideo, SheerVideo, SmackerSmacker, Snow, Sorenson, Theora, VC-1, WMV\\
+		\hline
+		Audio & ISO/CEI & MPEG-1 Layer III (MP3), MPEG-1 Layer II, MPEG-1 Layer I, Advanced Audio Coding, AAC, AAC+, eAAC+, SBR, Parametric Stereo \\
+		\cline {2-3}
+			& UIT-T & G.711, G.719, G.722, G.722.1, G.722.2, G.723, G.723.1, G.726, G.728, G.729, G.729.1, G.729a\\
+		\cline {2-3}
+			& Autres & AC3, AMR, Apple Lossless, ATRAC, CELT, FLAC, iLBC, Monkey's Audio, µ-law, Musepack, Nellymoser, OptimFROG, Opus, RealAudio, RTAudio, SHN, Siren, Speex, TAK, Vorbis, WavPack, WMA\\
+		\hline
+		Image & ISO/CEI/UIT-T & JPEG, JPEG 2000, JPEG-LS, JBIG, JBIG2, PNG, WBMP\\
+		\cline {2-3}
+			& Autres & BMP, GIF, ICER, ILBM, PCX, PGF, TGA, TIFF, JPEG XR/HD Photo, EMF/WMF, WebP\\			
+		\hline
+	\end{tabular} 
+\end{center}
+
 %------------------------------------------------
 %\section*{Optimisation par algorithme}
 
