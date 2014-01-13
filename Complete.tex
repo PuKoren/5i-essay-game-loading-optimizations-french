@@ -452,7 +452,7 @@ La transformation permet d'obtenir des coefficients qui ont des valeurs parfois 
 Les coefficients quantifiés doivent encore être codées pour les compresser encore plus avec le stockage et la transmission. Le but du codage entropique est d'assigner des codes courts aux symboles les plus récurrents. Le codage Huffman modifié et le codage arithmétique sont deux types de codage entropique.
 
 \begin{figure}[!h]%
-\includegraphics[width=\columnwidth]{images/codage_huffman.jpg}%
+\includegraphics[width=\textwidth]{images/codage_huffman.jpg}%
 \caption{Codage Huffman}%
 \label{}%
 \end{figure}
@@ -563,6 +563,43 @@ Puisque ces textures sont de plus en plus détaillées et de bonne qualité, le 
 
 Nous allons présenter quelques algorithmes de compression de texture pouvant être utilisé avec Direct3D (une bibliothèque logicielle de DirectX de Microsoft, moteur de rendu graphique en 3D sur les systèmes d'exploitation Windows) et OpenGL. nous nous intéresserons donc aux formats de compression DXT (S3TC), 3Dc et A8L8. Chacun de ces formats sont plus ou moins utilisés et possèdent leurs propres forces et faiblesses.
 
+\subsubsection{Le format de compression DXT}
+Il s'agit d'un standard de Direct3D et il existe plusieurs versions de cette méthode : DXT1, DXT2, DXT3, DXT4, DXT5 ; chacune étant utilisée pour un type d'image spécifique. La méthode générale consiste à représenter des blocs de 4x4 pixels à l'aide de bits. Un pixel sera défini par 4 bits si on utilise DXT1 (pas obligatoirement de bit utilisé pour l'alpha, si l'alpha est utilisé, on utilisera seulement 1 bit). Un pixel sera représenté par 8 bits pour DXT2, dont les 4 bits supplémentaires définiront l'alpha. Avec cet algorithme de compression avec perte, on obtient des blocs de 4x4 pixels pouvant aller de 64 à 128 bits, permettant d'avoir un taux de compression variant de 4:1 à 6:1. En fonction de la version que l'on utilise, on peut obtenir des images moins lourdes en mémoire au détriment de la qualité. En effet, les images seront définies par plus ou moins de bits, donc plus ou moins d'information pour chaque composante de couleur et d'alpha.
+
+\begin{figure}[!h]%
+	\begin{center}
+	\includegraphics[width=0.60\textwidth]{images/texture_dxt.png}%
+	\caption{Résultats de la compression DXT1}%
+	\label{}%
+	\end{center}
+\end{figure}
+
+\newpage
+
+On constate sur l'image ci-dessus que le résultat de la compression n'est pas très fidèle à l'image d'origine : il y a moins de variation dans les couleurs. Ceci s'explique par le fait qu'on utilise moins de bits pour représenter chaque composant et donc qu'on stocke moins d'information. Il est donc parfois préférable d'opter pour une version plus récente de cet algorithme pour avoir une qualité supérieure en ayant un taux de compression plus faible mais restant satisfaisant.
+
+Cette méthode n'est pas utilisable pour tous les types d'image. En effet, il est déconseillé de s'en servir pour compresser des images dessinées à la main (effet cartoon) ou pour des normal map. Ceci est dû au fait que ce type d'image souhaitant simuler un effet de relief contiennent des variations de couleur souvent très brutales, or la compression au format DXT permet plutôt de gérer images ayant des variations plus faibles entre les pixels voisins.
+
+
+\begin{figure}[!h]%
+	\begin{center}
+	\includegraphics[width=0.60\columnwidth]{images/dxt_compression_1.png}%
+	\caption{Compression DXT efficace}%
+	\label{}%
+	\end{center}
+\end{figure}
+
+\begin{figure}[!h]%
+	\begin{center}
+	\includegraphics[width=0.60\columnwidth]{images/dxt_compression_2.png}%
+	\caption{Compression DXT peu efficace : normal map}%
+	\label{}%
+	\end{center}
+\end{figure}
+
+Cependant il existe tout de même des astuces pour pouvoir utiliser cette méthode de compression pour compresser les normal map.
+
+\subsubsection{Le format de compression 3Dc}
 
 %------------------------------------------------
 %\section*{Optimisation par algorithme}
@@ -571,7 +608,7 @@ Nous allons présenter quelques algorithmes de compression de texture pouvant ê
 \newpage
 \section{Optimisation par le level design}
 \subsection{Conception du monde}
-Une autre façon d'améliorer les temps de chargement est d'adapter le level design afin de satisfaire les exigences des plate formes visées. Par exemple, si nous prenons la carte d'un jeu à monde ouvert comme GTA 3, sorti sur Playstation 2 et PC nous pouvons voir que les différentes parties de la ville sont organisées de façon à laisser un 'couloir' disponible pour que les chargements liés aux déplacements du joueur puissent avoir lieu.
+Une autre façon d'améliorer les temps de chargement est d'adapter le level design afin de satisfaire les exigences des plate formes visées. Par exemple, si nous prenons la carte d'un jeu à monde ouvert comme GTA 3, sorti sur PlayStation 2 et PC nous pouvons voir que les différentes parties de la ville sont organisées de façon à laisser un 'couloir' disponible pour que les chargements liés aux déplacements du joueur puissent avoir lieu.
 
 \begin{figure}[!h]%
 \includegraphics[width=\columnwidth]{images/gta3_map.png}%
