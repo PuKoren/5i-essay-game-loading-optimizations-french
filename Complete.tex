@@ -547,6 +547,23 @@ Le format OGG est le plus souvent utilisé par les jeux vidéo du fait qu'il s'a
 	\end{tabular} 
 \end{center}
 
+\subsection{Compression des textures}
+\subsubsection{Généralités}
+Les jeux sont de plus en pus réalistes que ce soit au niveau sonore ou au niveau graphique. Pour les jeux à monde ouvert, de nombreux objets sont affichés à l'écran, ils peuvent être plus ou moins détaillés et donc avoir une qualité particulière en fonction de leur type et surtout de leur importance pour l'expérience de jeu proposé par les développeurs. 
+
+La plupart des objets utilisés dans les jeux vidéo possèdent une texture : c'est une image en 2D qui est appliquée sur une surface ou un volume permettant de l'habiller. Il s'agit d'une sorte de papier peint qui peut être déformé en fonction de la forme sur laquelle on l'applique, ces textures sont alors plus ou moins complexes.
+
+\begin{figure}[!h]%
+\includegraphics[width=\columnwidth]{images/texture.jpg}%
+\caption{Exemples de textures appliquées sur des objets 3D}%
+\label{}%
+\end{figure}
+
+Puisque ces textures sont de plus en plus détaillées et de bonne qualité, le fichier peut être très volumineux. Lorsque plusieurs objets sont affichés à l'écran, il faut charger en mémoire leur texture, ce qui demande énormément de ressources. Il est donc important de soulager le travail du processeur et de faire en sorte que le chargement de tels éléments se fassent le plus rapidement possible pour pouvoir libérer de l'espace mémoire. Ainsi, il est conseillé de compresser les textures. Bien entendu il existe plusieurs techniques plus ou moins efficaces.
+
+Nous allons présenter quelques algorithmes de compression de texture pouvant être utilisé avec Direct3D (une bibliothèque logicielle de DirectX de Microsoft, moteur de rendu graphique en 3D sur les systèmes d'exploitation Windows) et OpenGL. nous nous intéresserons donc aux formats de compression DXT (S3TC), 3Dc et A8L8. Chacun de ces formats sont plus ou moins utilisés et possèdent leurs propres forces et faiblesses.
+
+
 %------------------------------------------------
 %\section*{Optimisation par algorithme}
 
