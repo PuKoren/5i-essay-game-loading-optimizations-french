@@ -587,7 +587,7 @@ Il s'agit d'un standard de Direct3D et il existe plusieurs versions de cette mé
 
 On constate sur l'image ci-dessus que le résultat de la compression n'est pas très fidèle à l'image d'origine : il y a moins de variation dans les couleurs. Ceci s'explique par le fait qu'on utilise moins de bits pour représenter chaque composant et donc qu'on stocke moins d'information. Il est donc parfois préférable d'opter pour une version plus récente de cet algorithme pour avoir une qualité supérieure en ayant un taux de compression plus faible mais restant satisfaisant.
 
-Cette méthode n'est pas utilisable pour tous les types d'image. En effet, il est déconseillé de s'en servir pour compresser des images dessinées à la main (effet cartoon) ou pour des normal map. Ceci est dû au fait que ce type d'image souhaitant simuler un effet de relief contiennent des variations de couleur souvent très brutales, or la compression au format DXT permet plutôt de gérer images ayant des variations plus faibles entre les pixels voisins.
+Cette méthode n'est pas utilisable pour tous les types d'image. En effet, il est déconseillé de s'en servir pour compresser des images dessinées à la main (effet cartoon) ou pour des normal map. Ceci est dû au fait que ce type d'image souhaitant simuler un effet de relief contiennent des variations de couleur souvent très brutales, or la compression au format DXT permet plutôt de gérer des images ayant des variations plus faibles entre les pixels voisins.
 
 
 \begin{figure}[!h]%
@@ -606,9 +606,34 @@ Cette méthode n'est pas utilisable pour tous les types d'image. En effet, il es
 	\end{center}
 \end{figure}
 
-Cependant il existe tout de même des astuces pour pouvoir utiliser cette méthode de compression pour compresser les normal map.
+Cependant il existe tout de même des astuces pour pouvoir utiliser cette méthode de compression pour compresser les normal map. Ces images contiennent comme leur nom l'indique une normale qui peut être extraite. Ce vecteur normal n'est pas obligatoirement de longueur 1, c'est ce qui provoque un rendu peu convenable lors de la compression des normal map avec le format de compression DXT. Le but est alors de renormaliser cette normale à 1. Ainsi le rendu sera meilleur, mais la qualité de celui-ci ne sera pas parfaite. Une deuxième astuce basée sur une technique utilisée dans Doom 3 permet d'obtenir un meilleur rendu. Cette technique exploite deux particularité du format de compression DXT5 :
+
+\begin{itemize}
+	\item Le canal alpha est compressé indépendamment des canaux rouge, vert et bleu. Donc celui-ci n'est pas trop altéré par la compression.
+	\item Les canaux RGB sont codés sur 16 bits (5 bits pour le rouge, 6 bits pour le vert, 5 bits pour le bleu). Ainsi le vert est beaucoup plus précis.
+\end{itemize}
+
+Le but est alors de se servir de ces deux particularités pour réordonner les données liées aux canaux RGBA. La formule mathématique suivante : z = sqrt(1 - x*x + y*y); montre qu'il est possible d'obtenir z à l'aide de x et y. Ainsi les normal map ont seulement besoin de stocker les valeurs des coordonnées x et y. Chaque texel contient le triplet RGB (R représente la coordonnée x, vert le y et bleu le z). Ainsi, on utilise la première particularité pour stocker R dans A. Et on utilise la deuxième pour le calcul de z à l'aide de y. C'est la fonctionnalité appelée le ``swizzling'' qui permet de réarranger les différents composantes d'un vecteur. Cette fonctionnalité est disponible dans les langages suivants : GLSL, Cg et HLSL de Direct3D.
+
+Il est donc possible d'utiliser le format de compression DXT pour des normal map, à condition d'utiliser les astuces. Cependant il est tout de même conseillé d'utiliser un autre moyen de compression pour ce type d'image car le résultat peut être décevant. De plus, la deuxième astuce est une technique un peu similaire à celle utilisée par le format de compression 3Dc, qui par ailleurs est plutôt efficace pour les normal map.
+
 
 \subsubsection{Le format de compression 3Dc}
+Il est important de noter que ce format de compression créé par ATI n'apporte pas nécessairement de meilleurs détails que la compression DXT. En effet, la compression 3Dc permet de réduire la taille des fichiers des images de type normal map. En compressant les normal map, les développeurs de jeux veulent améliorer la vitesse de transfert (économiser de la bande passante), ils peuvent aussi utiliser des normal map plus précises et de haute résolution pour obtenir une qualité de rendu du monde supérieure. Dans les deux cas la compression est utilisée.
+
+On rappelle que les normal map sont des textures utilisées dans les jeux vidéo pour améliorer le détails des objets 3D, ainsi les modèles de ces objets ne sont pas forcément composés de polygones hautement détaillés. De plus, la lumière reste correcte quelque soit l'angle dans lequel on regarde l'objet. Pour le jeu Farcry, les développeurs utilisent une méthode de ``bump-mapping'' amélioré appelée ``normal mapping''. La méthode consiste à réaliser un modèle très détaillé en utilisant de nombreux polygones. Le modèle qui sera utilisé dans le jeu final sera une version beaucoup plus allégée en polygones. Ainsi, il y a une différence plus ou moins grande entre le modèle initial et le modèle final simplifié. L'astuce est donc d'avoir une texture très détaillée produite à partir du modèle initial, que l'on applique au modèle final. Ainsi, les détails perdus (polygones détruits) entre les deux modèles seront visibles grâce à cette texture. Il est important de noter que cette méthode est efficace en terme d'optimisation, cependant elle n'est pas parfaite du fait qu'il y a une réelle perte de géométrie qui n'est pas palliée par la texture. Il s'agit donc d'une illusion. Cette méthode est souvent utilisée pour les pneus des voitures. Effectivement, les textures sont très détaillées tandis que la forme circulaire du modèle final reste approximative.
+
+Comme expliqué plus haut, il est possible de compresser les normal map à l'aide de la compression DXT, mais souvent des artefacts apparaissent. Il est donc préférable d'utiliser la compression 3Dc et d'après ATI, cette méthode permet de compresser des normal map avec un rapport de 4/1 sans perte de qualité significative.
+
+\begin{figure}[!h]%
+	\begin{center}
+	\includegraphics[width=0.60\columnwidth]{images/3dc_sample.jpg}%
+	\caption{Compression d'une normal map par la compression 3Dc comparé à la compression DXT}%
+	\label{}%
+	\end{center}
+\end{figure}
+
+Les normal map comportent tout de même des inconvénients. D'une part, leur utilisation consiste à peu près à appliquer une texture au pixel, ce qui augmente la charge du CPU. D'autre part, le nombre de données nécessaires est plus grand car plus le développeur souhaite ajouté des détails, plus la résolution de la normal map doit être élevée et donc plus il faut de bande passante pour le chargement. 
 
 %------------------------------------------------
 %\section*{Optimisation par algorithme}
