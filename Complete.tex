@@ -19,7 +19,7 @@
 %	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
 %----------------------------------------------------------------------------------------
 
-\documentclass[a4paper, 11pt]{article} % Font size (can be 10pt, 11pt or 12pt) and paper size (remove a4paper for US letter paper)
+\documentclass[a4paper, 12pt]{article} % Font size (can be 10pt, 11pt or 12pt) and paper size (remove a4paper for US letter paper)
 
 \usepackage[protrusion=true,expansion=true]{microtype} % Better typography
 \usepackage[frenchb]{babel}
@@ -43,7 +43,7 @@
 \vspace{50pt} % Some vertical space between the title and author name
 
 {\large\@author} % Author name
-\\\@date % Date
+%\\\@date % Date
 
 \vspace{40pt} % Some vertical space between the author block and abstract
 \end{flushright}
@@ -53,13 +53,13 @@
 %	TITLE
 %----------------------------------------------------------------------------------------
 
-\title{\textbf{Techniques d'optimisation des temps de chargements dans les jeux à monde ouvert}\\ % Title
-Ou comment réduire les temps de chargement} % Subtitle
-
-\author{\textsc{Christian NGO \& Jonathan MULLER} % Author
-\\{\textit{ESGI - 5ème année IJV}}} % Institution
-
-\date{\today} % Date
+%\title{\textbf{Techniques d'optimisation des temps de chargements dans les jeux à monde ouvert}\\ % Title
+%Ou comment réduire les temps de chargement} % Subtitle
+%
+%\author{\textsc{Christian NGO \& Jonathan MULLER} % Author
+%\\{\textit{ESGI - 5ème année IJV}}} % Institution
+%
+%\date{\today} % Date
 
 %----------------------------------------------------------------------------------------
 
@@ -73,26 +73,52 @@ Ou comment réduire les temps de chargement} % Subtitle
 
 %\renewcommand{\abstractname}{Summary} % Uncomment to change the name of the abstract to something else
 
-\begin{abstract}
-Dans ce mémoire nous verrons comment réduire les temps de chargement des jeux vidéos en se basant à la fois sur les composants de la plate-forme cible, sur les techniques de compression, sur l'algorithme et sur le level design.
-\end{abstract}
-
-\hspace*{3,6mm}\textit{Mots clefs:} chargement , optimisation , ressources , streaming , jeu % Keywords
-
-\vspace{30pt} % Some vertical space between the abstract and first section
+%\begin{abstract}
+%Dans ce mémoire nous verrons comment réduire les temps de chargement des jeux vidéos en se basant à la fois sur les composants de la plate-forme cible, sur les techniques de compression, sur l'algorithme et sur le level design.
+%\end{abstract}
+%
+%\hspace*{3,6mm}\textit{Mots clefs:} chargement , optimisation , ressources , streaming , jeu % Keywords
+%
+%\vspace{30pt} % Some vertical space between the abstract and first section
 
 %----------------------------------------------------------------------------------------
 %	ESSAY BODY
 %----------------------------------------------------------------------------------------
 
-\section{Introduction}
-
-Les jeux vidéos comportent année après année un nombre grandissant de ressources nécessaires pour leur fonctionnement. Des textures aux modèles 3D, le poids de ces ressources augmente tout comme leur nombre, l'augmentation de la taille mémoire des machines permettant aux créateurs de jeux de charger plus de ressources à la fois. Cependant, augmenter la taille et le nombre des ressources a un prix, celui du temps de chargement. Dans ce mémoire nous verrons comment réduire ces temps de chargement en s'adaptant aux médias qui permettent de stocker les ressources du jeu, en tirant partie des capacités des processeurs, de l'espace disponible et de la mémoire RAM, des différents formats de compression, mais aussi des adaptations de gameplay qui peuvent permettre un chargement transparent pour l'utilisateur.
-
 \tableofcontents
-
-%------------------------------------------------
 \newpage
+
+\section{Remerciements}
+Nous tenons à remercier M. Nicolas VIDAL, notre maître de mémoire pour nous avoir guidé dans notre travail ainsi que pour son soutien. Il a su nous orienter lors de nos choix et de nos recherches.
+
+\newpage
+
+\section{Résumé}
+Depuis leur création, les jeux vidéo ne cessent d'évoluer à tous les niveaux : univers, gameplay, graphismes, techniques de développement, ressources, etc. De nos jours, les jeux vidéo sont de plus en plus gourmands en terme de volume et de ressources matériels requis. Ceci est dû à une volonté de rendre ces jeux plus réalistes et plus jolis pour en mettre plein la vue. Il faut pour cela, créer des ressources (éléments du jeux tels que les personnages, objets, décors, etc.) de plus en plus détaillés, ce qui augmente considérablement leur poids. Ainsi il faut toujours plus d'espace sur les supports mais aussi plus d'espace mémoire allouée pour charger ces éléments et les afficher au cours d'une session de jeu. Les développeurs ont dû mettre en place des techniques permettant d'optimiser les temps de chargement de ces ressources. A travers ce mémoire, nous souhaitons présenter et expliquer les différentes techniques utilisées par les développeurs que ce soit lors de la conception du jeu ou bien lors de son utilisation. Le but est de fournir aux jeunes concepteurs de jeux vidéo une liste des techniques d'optimisation les plus efficaces pour des cas particulier ainsi que les choses à éviter pour mener à bien le développement de leur jeu.
+
+\section{Abstract}
+Video games are evolving at any points : world, gameplay, graphics, development techniques, resources, etc. Nowadays, video games are really big and require lot of hardware resources. This is due to a desire to make them more realistic with better graphics. To do so, developers need to create resources (elements of games like characters, objetcs, backgrounds, etc.) more detailed, which greatly increase the space needed to store them. It also needs more memory space allocated to load and display these elements in a game session. Developers had to develop techniques to optimize the loading time of these resources. We wish to present and explain the various techniques used by developers to design their games. The goal is to provide young video game designers a list of the most effective optimization techniques as well as things to avoid to complete the development of their game.
+
+\section{Mots clés}
+\begin{center}
+	\begin{tabular}{|p{0.45\columnwidth}|p{0.45\columnwidth}|}
+		\hline
+		Mots clés & Key words\\
+		\hline
+		Chargement&Loading\\
+		Optimisation&Optimization\\
+		Compression&Compression\\
+		Ressources&Resources\\
+		Jeu&Game\\
+		\hline
+	\end{tabular}
+\end{center}
+
+\newpage
+
+\section{Introduction}
+Les jeux vidéo comportent année après année un nombre grandissant de ressources nécessaires pour leur fonctionnement. Des textures aux modèles 3D, le poids de ces ressources augmente tout comme leur nombre, l'augmentation de la taille mémoire des machines permettant aux créateurs de jeux de charger plus de ressources à la fois. Cependant, augmenter la taille et le nombre des ressources a un prix, celui du temps de chargement. Dans ce mémoire nous verrons comment réduire ces temps de chargement en s'adaptant aux médias qui permettent de stocker les ressources du jeu, en tirant partie des capacités des processeurs, de l'espace disponible et de la mémoire RAM, des différents formats de compression, mais aussi des adaptations de gameplay qui peuvent permettre un chargement transparent pour l'utilisateur.
+
 \subsection[Pourquoi améliorer les temps de chargement]{Pourquoi avons nous besoin d'améliorer les temps de chargement}
 La quantité de mémoire disponible augmente régulièrement sur les postes des utilisateurs, ce qui permet aux concepteurs de jeux de proposer des jeux de plus en plus riches et chargés en éléments graphiques, ce qui demande beaucoup de ressources à créer, stocker, et donc charger. En améliorant les temps de chargement des programmes, nous pouvons faire passer cette quantité de données en mémoire plus rapidement, et donc avoir des jeux qui permettent de jouer rapidement, sans passer de longs instants devant un écran de chargement à plusieurs reprises.
 
@@ -105,8 +131,7 @@ Au contraire sur un disque SSD, les temps d'accès étant très bas et la capaci
 
 Les temps de chargement peuvent également être réduits en utilisant le processeur pour décompresser des ressources : ainsi le temps nécessaire au transfert de la donnée depuis le disque à la mémoire est réduit puisque la donnée est compressée sur le dit disque. Il faut cependant que le mode de compression soit adapté à la puissance du processeur et à la vitesse de transmission du support de stockage.
 
-\newpage
-En modifiant l'algorithme du jeu, nous pouvons aussi influer sur le chargement des données, en évitant par exemple de stocker plusieurs fois des ressources très similaires. Si nous prennons l'exemple des sprites 2D, nous pouvons stocker l'image de base une fois, puis effectuer toutes les déclinaisons de couleurs de manière algorithmique en modifiant la palette de couleurs. De cette façon, nous n'avons qu'à stocker une texture, puis uniquement des palettes de couleurs.
+En modifiant l'algorithme du jeu, nous pouvons aussi influer sur le chargement des données, en évitant par exemple de stocker plusieurs fois des ressources très similaires. Si nous prenons l'exemple des sprites 2D, nous pouvons stocker l'image de base une fois, puis effectuer toutes les déclinaisons de couleurs de manière algorithmique en modifiant la palette de couleurs. De cette façon, nous n'avons qu'à stocker une texture, puis uniquement des palettes de couleurs.
 
 Enfin, une méthode pour cacher les chargements aux joueurs consiste à construire son level design pour permettre certaines zones "tampons" comme un pont ou un couloir dont le passage est obligatoire pour passer d'une zone à l'autre, et qui va permettre de charger/décharger les zones concernées en tout transparence pour l'utilisateur. Cependant, cette technique est déconseillée puisqu'elle limite la liberté des level-designers en leur imposant des contraintes "techniques".
 
@@ -176,7 +201,6 @@ Il existe 5 vitesses pour les disques durs, qui sont le nombre de rotation effec
 
 Les taux de transfert des disques à 7200 tours par minute en 2010 sont en moyenne de 125Mo par seconde. Comparé aux supports de stockage au format optique, le disque dur les surpasse tous. Cependant des problèmes peuvent intervenir sur les disques durs comme la corruption de données, ou la perte de vitesse à cause de la fragmentation qui peut intervenir sur certains systèmes de fichiers. Séparer les fichiers sur ce type de disque pour ne pas avoir de chargement sous forme de flux peut donc s'avérer pénalisant sur un disque fortement fragmenté.
 
-\newpage
 \subsubsection{Le SSD}
 Le SSD est le support de stockage qui remplace peu à peu les disques durs. Ses taux d'accès étant très faible (en dessous de 0.1ms) et sa capacité de transfert élevé (entre 100 et 550Mo par seconde)\cite{hardware:ssdspeed}, il permet d'avoir peu voire pas de chargement visible pour l'utilisateur dans les jeux vidéos. 
 
@@ -213,7 +237,7 @@ Ainsi notre fichier contenant les ressources reste toujours ouvert, et il ne nou
 \end{figure}
 
 Un secteur est un fragment d'un disque qui va contenir les données stockées, un disque est composé de plusieurs secteurs mis les uns à la suite des autres. Lors d'une opération de lecture, la tête de lecture du disque ou le laser pour un disque optique va se positionner en face du secteur, et commencer à lire les données. Le temps de positionnement est le plus long, mais à chaque fois que la tête se déplacer pour parcourir un secteur, nous perdons du temps. 
-Une technique pour réduire cette perte est d'aligner les fichiers sur les secteurs (ce qui entraine une perte d'espace, si le média à un espace limité, il ne sera peut être pas possible de réaliser cette opération) \cite{industry:streaming-for-loading}.
+Une technique pour réduire cette perte est d'aligner les fichiers sur les secteurs (ce qui entraîne une perte d'espace, si le média à un espace limité, il ne sera peut être pas possible de réaliser cette opération) \cite{industry:streaming-for-loading}.
 
 \begin{figure}[!h]%
 \begin{center} 
@@ -244,11 +268,11 @@ Notons tout de même qu'en cas de déplacement brusque ou de nombreux objets à 
 
 Ce découpage permet d'annuler le chargement en cours de route si le joueur décide de changer de direction ou passe trop vite pour que l'objet soit dans son champ de vision.
 
-Le chargement en tâche de fond prend aussi des ressources processeur, utilisée par le jeu en tâche principale et ce à cause notamment de la compression des fichiers (voir section Optimisation par compression). Il convient donc de limiter cet usage pour laisser au jeu le plus possible de capacité de calcul pour que le chargement ne fasse pas chuter les taux de rafraichissement.
+Le chargement en tâche de fond prend aussi des ressources processeur, utilisée par le jeu en tâche principale et ce à cause notamment de la compression des fichiers (voir section Optimisation par compression). Il convient donc de limiter cet usage pour laisser au jeu le plus possible de capacité de calcul pour que le chargement ne fasse pas chuter les taux de rafraîchissement.
 
 \newpage
 \subsection{Définir des zones}
-Pour permettre un jeu fluide et éviter les écrans de chargements, il convient d'anticiper les déplacements du joueur et de connaitre les zones qu'il peut potentiellement visiter. Ainsi, il est utile de connaitre la zone dans laquelle est placé le joueur ainsi que les zones qui l'entourent. Lorsqu'un joueur visitera une zone, les zones d'à côté seront chargées en tâche de fond et celles qui sont éloignées seront déchargées ou gardées uniquement sous forme simplifiée.
+Pour permettre un jeu fluide et éviter les écrans de chargements, il convient d'anticiper les déplacements du joueur et de connaitre les zones qu'il peut potentiellement visiter. Ainsi, il est utile de connaître la zone dans laquelle est placé le joueur ainsi que les zones qui l'entourent. Lorsqu'un joueur visitera une zone, les zones d'à côté seront chargées en tâche de fond et celles qui sont éloignées seront déchargées ou gardées uniquement sous forme simplifiée.
 
 \begin{wrapfigure}{l}{0.5\textwidth}
 \begin{center}
@@ -261,7 +285,6 @@ La figure ci contre représente un système de patch sous forme d'arbre avec plu
 
 Un second problème se pose dans le cas ou un déplacement instantané peut survenir (téléportation). Pour résoudre en partie ce problème, il convient de trouver les zones dans lesquelles le joueur va pouvoir se téléporter et de les charger en mode moyen à l'avance si l'espace mémoire le permet, même si elles ne sont pas voisines. Ainsi le joueur pourra être téléporté et la zone finira de charger du mode moyen au mode détaillé en cours de route. Ce processus peut intervenir à proximité d'un portail de téléportation, ou lorsque le joueur est dans son inventaire et possède des objets qui lui permettent de se téléporter.
 
-\newpage
 \subsection{Prioriser les chargements}
 Une technique pour rendre les chargements le plus discret possible serait de définir un ordre de priorité pour les ressources et objets à afficher. 
 
@@ -275,15 +298,15 @@ Viennent en dernier lieux les objets de décoration, la végétation, et les son
 \subsection{Quand charger ?}
 Si les chargements sont inévitables, il convient de définir clairement le moment où ils vont intervenir. Les joueurs ont tendance à accepter d'avantage les chargements à des moments particulier du jeu vidéo. Par exemple, il faut que le jeu expose un rendu rapidement à l'écran après son lancement, et que le menu soit affiché peu après, pour avoir l'impression d'un chargement moins lourd. 
 
-Nous avons déjà pu experimenter des jeux qui mettent de nombreuses secondes à démarrer entre le lancement du binaire et l'affichage de la première image. Ce temps semblera sensiblement moins long à l'aide d'un splash screen, pour confirmer que le jeu est en train de charger et faire patienter le joueur. Si le splash screen propose une animation, le temps de chargement sera encore moins long.
+Nous avons déjà pu expérimenter des jeux qui mettent de nombreuses secondes à démarrer entre le lancement du binaire et l'affichage de la première image. Ce temps semblera sensiblement moins long à l'aide d'un splash screen, pour confirmer que le jeu est en train de charger et faire patienter le joueur. Si le splash screen propose une animation, le temps de chargement sera encore moins long.
 
 Une astuce trouvée par de nombreux jeux est de proposer une petite animation lors du chargement du jeu, animation contrôlable en partie par le joueur. Ainsi il peut passer le temps en réalisant un mini jeu ou en contrôlant un petit personnage. Les temps de chargements semblent alors beaucoup moins long.
 
-Historiquement, les joueurs sont habitués à devoir attendre entre le menu et le chargement du niveau ou du jeu, il est donc conseillé de placer le maximum de chargement à ce moment là. Par exemple dans Donkey Kong Country Tropical Freeze, tous les chargements sont effectués entre le menu et la carte du monde. Une fois le niveau lancé, un chargement très court intervient pour charger le peu d'assets manquants et générer le niveau. Si la totalité du niveau était chargé au moment de sa selection sur la carte du monde, ces mêmes chargements deviendraient un défaut notoire.
+Historiquement, les joueurs sont habitués à devoir attendre entre le menu et le chargement du niveau ou du jeu, il est donc conseillé de placer le maximum de chargement à ce moment là. Par exemple dans Donkey Kong Country Tropical Freeze, tous les chargements sont effectués entre le menu et la carte du monde. Une fois le niveau lancé, un chargement très court intervient pour charger le peu d'assets manquants et générer le niveau. Si la totalité du niveau était chargé au moment de sa sélection sur la carte du monde, ces mêmes chargements deviendraient un défaut notoire.
 
 \newpage
 \subsection{Préparer des billboards}
-Les billboards sont les textures qui remplacent les objets 3D au loin dans les jeux, pas exemple les arbres. Ils font toujours face à la caméra du joueur et sont généralement rafraichies que lorsque le joueur se déplace d'une certaine distance par rapport à sa position de base lorsque le billboard a été calculé la première fois. 
+Les billboards sont les textures qui remplacent les objets 3D au loin dans les jeux, pas exemple les arbres. Ils font toujours face à la caméra du joueur et sont généralement rafraîchies que lorsque le joueur se déplace d'une certaine distance par rapport à sa position de base lorsque le billboard a été calculé la première fois. 
 
 \begin{figure}[!h]%
 \includegraphics[width=\columnwidth]{images/bf3_billboards.png}%
@@ -476,8 +499,6 @@ Les coefficients quantifiés doivent encore être codées pour les compresser en
 \label{}%
 \end{figure}
 
-\newpage
-
 Une fois ces étapes réalisées, le stockage peut être effectué. Lorsque la vidéo est demandée par le jeu, le programme charge la vidéo, il doit alors décoder la séquence obtenue lors de la compression. Le temps de décompression est variable en fonction de la taille des données à traiter. 
 
 Les organisations internationales de standardisation l'UIT-T et l'ISO/IEC ont développés des standards de compression vidéo tel que le MPEG-4, format utilisé par les jeux vidéo. Une amélioration de ce format, le MPEG-4 H.264 permet lors de la compression d'obtenir un codec plus performant.
@@ -512,7 +533,7 @@ Il est donc préférable de trouver le format de compression idéal pour que cel
 Voici un tableau réunissant quelques formats de compression audio :
 
 \begin{center}
-	\begin{tabular}{|p{0.2\columnwidth}|p{0.2\columnwidth}|p{0.25\columnwidth}|p{0.25\columnwidth}|}
+	\begin{tabular}{|p{0.25\columnwidth}|p{0.25\columnwidth}|p{0.2\columnwidth}|p{0.15\columnwidth}|}
 		\hline
 		Format & Algorithme & Vitesse de transfert (kbits/s) & Latence (ms)\\
 		\hline
@@ -645,8 +666,11 @@ Comme expliqué plus haut, il est possible de compresser les normal map à l'aid
 
 Les normal map comportent tout de même des inconvénients. D'une part, leur utilisation consiste à peu près à appliquer une texture au pixel, ce qui augmente la charge du CPU. D'autre part, le nombre de données nécessaires est plus grand car plus le développeur souhaite ajouté des détails, plus la résolution de la normal map doit être élevée et donc plus il faut de bande passante pour le chargement. 
 
+Les compressions DXT et 3Dc permettent d'optimiser la vitesse de chargement des textures tout en ayant une qualité visuelle satisfaisante.
+
 %------------------------------------------------
-\section*{Optimisation par les shaders}
+\newpage
+\section{Optimisation par les shaders}
 Le chargement du niveau peut être réduit en déportant les ressources graphiques dans les shaders. Par exemple, au lieu de charger le monde et les shaders, nous chargeons une représentation compressée du monde pour le générer par algorithme et nous gérons le texturage et l'affichage de celui ci via shader. 
 
 Les shaders ayant une taille plus petite, ils sont de ce fait plus rapides à charger mais demandent plus de puissance coté GPU. Ainsi, nous pouvons afficher un terrain complexe avec de nombreux détails de profondeur et un texturage très différent en fonction de son niveau par rapport à la mer, en générant les différents changements dans le shader.
@@ -655,7 +679,7 @@ Il en va de même pour tous les effets liés à la météo, les godray, etc. Tou
 
 Pour généraliser cette idée, nous pouvons dire que s'il est possible d'effectuer un rendu par les shaders, le mettre en place sera forcément positif pour le chargement du jeu.
 
-Les shaders étant compilés lors de leur utilisation pour s'adapter à la machine cible, il convient cependant de stoquer une version de ceux ci dans un cache local pour ne pas avoir à les régénérer à chaque fois, ce qui aurait un effet contraire sur le chargement du jeu.
+Les shaders étant compilés lors de leur utilisation pour s'adapter à la machine cible, il convient cependant de stocker une version de ceux ci dans un cache local pour ne pas avoir à les régénérer à chaque fois, ce qui aurait un effet contraire sur le chargement du jeu.
 
 %------------------------------------------------
 \newpage
@@ -700,6 +724,12 @@ Dans un monde ouvert, cela peut poser un problème puisque cette méthode semble
 
 \newpage
 \section{Conclusion}
+
+Les jeux ont beaucoup évolués depuis leur création. Aujourd'hui, ils sont très volumineux car ils contiennent un nombre de ressources très élevé qui sont souvent réalisées en haute résolution afin d'obtenir une qualité visuelle importante. Il est donc judicieux de s'intéresser aux différentes techniques permettant de gérer au mieux ces ressources. Nous avons vu que de nombreux paramètres (tels que les composants physiques de la console ou de la machine, le support de stockage contenant les données du jeu, etc.) doivent être pris en compte pour choisir les techniques les plus efficaces à utiliser. 
+
+Le but pour les développeurs est de réussir à optimiser le volume des données mais surtout les temps de chargement de celles-ci au cours d'une session de jeu. Il est intéressant de noter que les techniques d'optimisation sont très diverses et ne s'appliquent pas uniquement aux données du jeu. En effet, bien que la compression est une méthode très utilisée par les développeurs, il est possible d'optimiser le temps de chargement en organisant correctement les données sur le support de stockage. Il est même courant d'adapter le level design pour effectuer un chargement lorsque le joueur atteint une zone prédéfinie.
+
+En général, le support de stockage, les consoles ou machines sur lesquelles doivent tourner les jeux sont fixés par les éditeurs et le marché actuel, les développeurs doivent s'adapter pour produire un jeu stable. Il s'agit donc pour eux de bien comprendre comment fonctionnent les différents composants de la machine tels que le disque dur, le lecteur de disque et le processeur. En effet, d'une machine à l'autre et selon le support de stockage utilisé il sera plus ou moins judicieux d'organiser les données de manière à ce qu'elles soient chargées les unes à la suite des autres pour éviter que le lecteur ait besoin d'effectuer un nouveau tour pour se repositionner.
 
 %----------------------------------------------------------------------------------------
 %	BIBLIOGRAPHY
