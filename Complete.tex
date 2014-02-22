@@ -30,8 +30,8 @@
 \usepackage[utf8]{inputenc} % UTF-8 encoding for input, to get french special characters recognized
 \usepackage[T1]{fontenc} % Required for accented characters
 \linespread{1.05} % Change line spacing here, Palatino benefits from a slight increase by default
-\usepackage{parskip} % add some space between paragraph
-
+\usepackage{parskip} % add some space between paragraph 
+ 
 \makeatletter
 \renewcommand\@biblabel[1]{\textbf{#1.}} % Change the square brackets for each bibliography item from '[1]' to '1.'
 \renewcommand{\@listI}{\itemsep=0pt} % Reduce the space between items in the itemize and enumerate environments and the bibliography
@@ -270,6 +270,16 @@ Par exemple, nous pouvons retarder le chargement et l'apparition d'un objet qui 
 Les objets à charger en suite sont les NPC, ou personnages non joueur: un animal dans le décors que le joueur peut tuer pour récolter des ressources, ou un personnage donneur de quête par exemple. Ceux ci ne sont pas critiques pour l'avancée du joueur et souvent nécessitent un certain nombre de ressources (modélisation, sons et animations) ainsi il convient de les charger en second lieux. 
 
 Viennent en dernier lieux les objets de décoration, la végétation, et les sons. Cela ne pose pas de problème de permettre au joueur d'avancer avant d'entendre ses bruits de pas par exemple. Avoir différentes textures de fleur pour un sol en plein air n'est pas important pour le joueur, tout comme des tuyaux qui viendraient joncher un couloir. Les charger en dernier permet d'avoir un affichage rapide des niveaux et de réduire au maximum les temps d'attente du joueur.
+
+\newpage
+\subsection{Quand charger ?}
+Si les chargements sont inévitables, il convient de définir clairement le moment où ils vont intervenir. Les joueurs ont tendance à accepter d'avantage les chargements à des moments particulier du jeu vidéo. Par exemple, il faut que le jeu expose un rendu rapidement à l'écran après son lancement, et que le menu soit affiché peu après, pour avoir l'impression d'un chargement moins lourd. 
+
+Nous avons déjà pu experimenter des jeux qui mettent de nombreuses secondes à démarrer entre le lancement du binaire et l'affichage de la première image. Ce temps semblera sensiblement moins long à l'aide d'un splash screen, pour confirmer que le jeu est en train de charger et faire patienter le joueur. Si le splash screen propose une animation, le temps de chargement sera encore moins long.
+
+Une astuce trouvée par de nombreux jeux est de proposer une petite animation lors du chargement du jeu, animation contrôlable en partie par le joueur. Ainsi il peut passer le temps en réalisant un mini jeu ou en contrôlant un petit personnage. Les temps de chargements semblent alors beaucoup moins long.
+
+Historiquement, les joueurs sont habitués à devoir attendre entre le menu et le chargement du niveau ou du jeu, il est donc conseillé de placer le maximum de chargement à ce moment là. Par exemple dans Donkey Kong Country Tropical Freeze, tous les chargements sont effectués entre le menu et la carte du monde. Une fois le niveau lancé, un chargement très court intervient pour charger le peu d'assets manquants et générer le niveau. Si la totalité du niveau était chargé au moment de sa selection sur la carte du monde, ces mêmes chargements deviendraient un défaut notoire.
 
 \newpage
 \subsection{Préparer des billboards}
@@ -636,7 +646,8 @@ Comme expliqué plus haut, il est possible de compresser les normal map à l'aid
 Les normal map comportent tout de même des inconvénients. D'une part, leur utilisation consiste à peu près à appliquer une texture au pixel, ce qui augmente la charge du CPU. D'autre part, le nombre de données nécessaires est plus grand car plus le développeur souhaite ajouté des détails, plus la résolution de la normal map doit être élevée et donc plus il faut de bande passante pour le chargement. 
 
 %------------------------------------------------
-%\section*{Optimisation par algorithme}
+\section*{Optimisation par algorithme}
+
 
 %------------------------------------------------
 \newpage
