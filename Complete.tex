@@ -646,8 +646,16 @@ Comme expliqué plus haut, il est possible de compresser les normal map à l'aid
 Les normal map comportent tout de même des inconvénients. D'une part, leur utilisation consiste à peu près à appliquer une texture au pixel, ce qui augmente la charge du CPU. D'autre part, le nombre de données nécessaires est plus grand car plus le développeur souhaite ajouté des détails, plus la résolution de la normal map doit être élevée et donc plus il faut de bande passante pour le chargement. 
 
 %------------------------------------------------
-\section*{Optimisation par algorithme}
+\section*{Optimisation par les shaders}
+Le chargement du niveau peut être réduit en déportant les ressources graphiques dans les shaders. Par exemple, au lieu de charger le monde et les shaders, nous chargeons une représentation compressée du monde pour le générer par algorithme et nous gérons le texturage et l'affichage de celui ci via shader. 
 
+Les shaders ayant une taille plus petite, ils sont de ce fait plus rapides à charger mais demandent plus de puissance coté GPU. Ainsi, nous pouvons afficher un terrain complexe avec de nombreux détails de profondeur et un texturage très différent en fonction de son niveau par rapport à la mer, en générant les différents changements dans le shader.
+
+Il en va de même pour tous les effets liés à la météo, les godray, etc. Tous ces effets peuvent être codés et chargés rapidement dans un ensemble de shaders qui prennent peu de place en mémoire et sur le disque. Ainsi, il devient possible d'améliorer nettement les performances sur des supports beaucoup plus lents que les PC comme les consoles de salon et portables.
+
+Pour généraliser cette idée, nous pouvons dire que s'il est possible d'effectuer un rendu par les shaders, le mettre en place sera forcément positif pour le chargement du jeu.
+
+Les shaders étant compilés lors de leur utilisation pour s'adapter à la machine cible, il convient cependant de stoquer une version de ceux ci dans un cache local pour ne pas avoir à les régénérer à chaque fois, ce qui aurait un effet contraire sur le chargement du jeu.
 
 %------------------------------------------------
 \newpage
