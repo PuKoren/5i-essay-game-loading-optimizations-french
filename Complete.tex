@@ -93,7 +93,7 @@ Nous tenons à remercier:
 
 M. Nicolas VIDAL, notre maître de mémoire pour nous avoir guidé dans notre travail ainsi que pour son soutien. Il a su nous orienter lors de nos choix et de nos recherches.
 
-M. Emmanuel PETER, pour la mise à disposition des locaux et du matériel, ainsi que la selection des cours de qualité dispensés à l'ESGI qui nous ont permis d'acquérir les connaissances nécessaires pour nos recherches.
+M. Emmanuel PETER, pour la mise à disposition des locaux et du matériel, ainsi que la sélection des cours de qualité dispensés à l'ESGI qui nous ont permis d'acquérir les connaissances nécessaires pour nos recherches.
 
 L'équipe pédagogique de l'ESGI, pour sa réactivité et les réponses claires à nos questions concernant le mémoire.
 
@@ -284,7 +284,7 @@ Le chargement en tâche de fond prend aussi des ressources processeur, utilisée
 
 \newpage
 \subsection{Définir des zones}
-Pour permettre un jeu fluide et éviter les écrans de chargements, il convient d'anticiper les déplacements du joueur et de connaitre les zones qu'il peut potentiellement visiter. Ainsi, il est utile de connaître la zone dans laquelle est placé le joueur ainsi que les zones qui l'entourent. Lorsqu'un joueur visitera une zone, les zones d'à côté seront chargées en tâche de fond et celles qui sont éloignées seront déchargées ou gardées uniquement sous forme simplifiée.
+Pour permettre un jeu fluide et éviter les écrans de chargements, il convient d'anticiper les déplacements du joueur et de connaître les zones qu'il peut potentiellement visiter. Ainsi, il est utile de connaître la zone dans laquelle est placé le joueur ainsi que les zones qui l'entourent. Lorsqu'un joueur visitera une zone, les zones d'à côté seront chargées en tâche de fond et celles qui sont éloignées seront déchargées ou gardées uniquement sous forme simplifiée.
 
 \begin{wrapfigure}{l}{0.5\textwidth}
 \begin{center}
@@ -667,7 +667,7 @@ Il est donc possible d'utiliser le format de compression DXT pour des normal map
 
 \newpage
 \subsubsection{Le format de compression 3Dc}
-Il est important de noter que ce format de compression créé par ATI n'apporte pas nécessairement de meilleurs détails que la compression DXT. En effet, la compression 3Dc permet de réduire la taille des fichiers des images de type normal map. En compressant les normal map, les développeurs de jeux veulent améliorer la vitesse de transfert (économiser de la bande passante), ils peuvent aussi utiliser des normal map plus précises et de haute résolution pour obtenir une qualité de rendu du monde supérieure. Dans les deux cas la compression est utilisée.
+Il est important de noter que ce format de compression créé par ATI n'apporte pas nécessairement de meilleurs détails que la compression DXT. En effet, la compression 3Dc\cite{compression:textures} permet de réduire la taille des fichiers des images de type normal map. En compressant les normal map, les développeurs de jeux veulent améliorer la vitesse de transfert (économiser de la bande passante), ils peuvent aussi utiliser des normal map plus précises et de haute résolution pour obtenir une qualité de rendu du monde supérieure. Dans les deux cas la compression est utilisée.
 
 On rappelle que les normal map sont des textures utilisées dans les jeux vidéo pour améliorer le détails des objets 3D, ainsi les modèles de ces objets ne sont pas forcément composés de polygones hautement détaillés. De plus, la lumière reste correcte quelque soit l'angle dans lequel on regarde l'objet. Pour le jeu Farcry, les développeurs utilisent une méthode de ``bump-mapping'' amélioré appelée ``normal mapping''. La méthode consiste à réaliser un modèle très détaillé en utilisant de nombreux polygones. Le modèle qui sera utilisé dans le jeu final sera une version beaucoup plus allégée en polygones. Ainsi, il y a une différence plus ou moins grande entre le modèle initial et le modèle final simplifié. L'astuce est donc d'avoir une texture très détaillée produite à partir du modèle initial, que l'on applique au modèle final. Ainsi, les détails perdus (polygones détruits) entre les deux modèles seront visibles grâce à cette texture. Il est important de noter que cette méthode est efficace en terme d'optimisation, cependant elle n'est pas parfaite du fait qu'il y a une réelle perte de géométrie qui n'est pas palliée par la texture. Il s'agit donc d'une illusion. Cette méthode est souvent utilisée pour les pneus des voitures. Effectivement, les textures sont très détaillées tandis que la forme circulaire du modèle final reste approximative.
 
