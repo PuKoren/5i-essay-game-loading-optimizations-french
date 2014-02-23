@@ -453,6 +453,7 @@ Plus le nombre de polygones que l'on souhaite afficher à l'écran est élevé, 
 
 La compression des meshes permet aussi d'obtenir des fichiers moins volumineux. On distingue toujours la compression avec ou sans perte. La première insiste sur le fait que certains détails seront supprimés avant la compression, il s'agit en général d'éléments jugés non perceptibles par l’œil humain lors de la visualisation. 
 
+\newpage
 \subsection{Compression des vidéos}
 Dans la plupart des jeux, des cinématiques sont utilisées pour mettre en scène l'histoire du jeu. Elles peuvent être réalisées directement avec le moteur du jeu à l'aide d'animations. Souvent, il s'agit plutôt de vidéos en images de synthèses. On les retrouve généralement au démarrage du jeu avant l'écran titre mais aussi avant chaque mission pour présenter la situation. Ces vidéos doivent donc être chargée puis diffusée. Tout comme pour le chargement des objets 3D et les images on peut penser qu'il faut un certain temps à la machine pour effectuer cette action. 
 
@@ -492,6 +493,7 @@ En ce qui concerne le rôle du décodeur, il reconstruit la vidéo à partir de 
 \subsubsection{Prédiction}
 Dans une vidéo, on constate que deux images successives sont relativement identiques. En effet, si la vidéo présente l'animation d'un personnage dans un décor particulier, on peut observer que certains éléments restent inchangés d'une image à l'autre, seul le personnage ou une partie de son corps bouge. Cela permet de définir quelles informations sont redondantes ou non. Ainsi, le module de prédiction obtient un résidu définissant la différence entre les différentes trames.
 
+\newpage
 \subsubsection{Transformation}
 La transformation permet de compacter la trame obtenue suite à la prédiction. Il existe plusieurs transformées permettant d'effectuer cette tâche, par exemple la Transformée Cosinus Discrète (DCT) qui se base sur des blocs et la Transformée Ondelette Discrète (DWT) basée sur une image entière. Il semblerait que la DWT soit plus performantes que la DCT mais elle nécessite trop de mémoire.
 
@@ -530,6 +532,7 @@ Le MPEG-4 est un format standard de compression vidéo souvent utilisé dans les
 
 On peut supposer que lorsqu'une vidéo est lue pendant le jeu, un programme permet de charger en fond les données de la séquence de jeu qui suit. Cette technique peut être efficace pour optimiser le temps de chargement. Ainsi le joueur pourra jouer directement une fois la vidéo terminée.
 
+\newpage
 \subsection{Compression des sons}
 
 Il existe de nombreux formats de compression audio. Comme pour toutes compressions de données, elle peuvent être avec ou sans perte. Dans tous les cas, le but est de choisir le format dans lequel le taux de compression et la qualité sont satisfaisantes, mais on souhaite aussi que la vitesse de transmission soit la plus rapide possible.
@@ -595,6 +598,7 @@ Le format OGG est le plus souvent utilisé par les jeux vidéo du fait qu'il s'a
 	\end{tabular} 
 \end{center}
 
+\newpage
 \subsection{Compression des textures}
 \subsubsection{Généralités}
 Les jeux sont de plus en pus réalistes que ce soit au niveau sonore ou au niveau graphique. Pour les jeux à monde ouvert, de nombreux objets sont affichés à l'écran, ils peuvent être plus ou moins détaillés et donc avoir une qualité particulière en fonction de leur type et surtout de leur importance pour l'expérience de jeu proposé par les développeurs. 
@@ -602,27 +606,28 @@ Les jeux sont de plus en pus réalistes que ce soit au niveau sonore ou au nivea
 La plupart des objets utilisés dans les jeux vidéo possèdent une texture : c'est une image en 2D qui est appliquée sur une surface ou un volume permettant de l'habiller. Il s'agit d'une sorte de papier peint qui peut être déformé en fonction de la forme sur laquelle on l'applique, ces textures sont alors plus ou moins complexes.
 
 \begin{figure}[!h]%
-\includegraphics[width=\columnwidth]{images/texture.jpg}%
+\begin{center}
+\includegraphics[width=0.8\columnwidth]{images/texture.jpg}%
 \caption{Exemples de textures appliquées sur des objets 3D}%
 \label{}%
+\end{center}
 \end{figure}
 
 Puisque ces textures sont de plus en plus détaillées et de bonne qualité, le fichier peut être très volumineux. Lorsque plusieurs objets sont affichés à l'écran, il faut charger en mémoire leur texture, ce qui demande énormément de ressources. Il est donc important de soulager le travail du processeur et de faire en sorte que le chargement de tels éléments se fassent le plus rapidement possible pour pouvoir libérer de l'espace mémoire. Ainsi, il est conseillé de compresser les textures. Bien entendu il existe plusieurs techniques plus ou moins efficaces.
 
 Nous allons présenter quelques algorithmes de compression de texture pouvant être utilisé avec Direct3D (une bibliothèque logicielle de DirectX de Microsoft, moteur de rendu graphique en 3D sur les systèmes d'exploitation Windows) et OpenGL. nous nous intéresserons donc aux formats de compression DXT (S3TC), 3Dc et A8L8. Chacun de ces formats sont plus ou moins utilisés et possèdent leurs propres forces et faiblesses.
 
+\newpage
 \subsubsection{Le format de compression DXT}
 Il s'agit d'un standard de Direct3D et il existe plusieurs versions de cette méthode : DXT1, DXT2, DXT3, DXT4, DXT5 ; chacune étant utilisée pour un type d'image spécifique. La méthode générale consiste à représenter des blocs de 4x4 pixels à l'aide de bits. Un pixel sera défini par 4 bits si on utilise DXT1 (pas obligatoirement de bit utilisé pour l'alpha, si l'alpha est utilisé, on utilisera seulement 1 bit). Un pixel sera représenté par 8 bits pour DXT2, dont les 4 bits supplémentaires définiront l'alpha. Avec cet algorithme de compression avec perte, on obtient des blocs de 4x4 pixels pouvant aller de 64 à 128 bits, permettant d'avoir un taux de compression variant de 4:1 à 6:1. En fonction de la version que l'on utilise, on peut obtenir des images moins lourdes en mémoire au détriment de la qualité. En effet, les images seront définies par plus ou moins de bits, donc plus ou moins d'information pour chaque composante de couleur et d'alpha.
 
 \begin{figure}[!h]%
-	\begin{center}
-	\includegraphics[width=0.60\textwidth]{images/texture_dxt.png}%
+\begin{center}
+	\includegraphics[width=0.5\columnwidth]{images/texture_dxt.png}%
 	\caption{Résultats de la compression DXT1}%
 	\label{}%
-	\end{center}
+\end{center}
 \end{figure}
-
-\newpage
 
 On constate sur l'image ci-dessus que le résultat de la compression n'est pas très fidèle à l'image d'origine : il y a moins de variation dans les couleurs. Ceci s'explique par le fait qu'on utilise moins de bits pour représenter chaque composant et donc qu'on stocke moins d'information. Il est donc parfois préférable d'opter pour une version plus récente de cet algorithme pour avoir une qualité supérieure en ayant un taux de compression plus faible mais restant satisfaisant.
 
@@ -656,12 +661,13 @@ Le but est alors de se servir de ces deux particularités pour réordonner les d
 
 Il est donc possible d'utiliser le format de compression DXT pour des normal map, à condition d'utiliser les astuces. Cependant il est tout de même conseillé d'utiliser un autre moyen de compression pour ce type d'image car le résultat peut être décevant. De plus, la deuxième astuce est une technique un peu similaire à celle utilisée par le format de compression 3Dc, qui par ailleurs est plutôt efficace pour les normal map.
 
-
+\newpage
 \subsubsection{Le format de compression 3Dc}
 Il est important de noter que ce format de compression créé par ATI n'apporte pas nécessairement de meilleurs détails que la compression DXT. En effet, la compression 3Dc permet de réduire la taille des fichiers des images de type normal map. En compressant les normal map, les développeurs de jeux veulent améliorer la vitesse de transfert (économiser de la bande passante), ils peuvent aussi utiliser des normal map plus précises et de haute résolution pour obtenir une qualité de rendu du monde supérieure. Dans les deux cas la compression est utilisée.
 
 On rappelle que les normal map sont des textures utilisées dans les jeux vidéo pour améliorer le détails des objets 3D, ainsi les modèles de ces objets ne sont pas forcément composés de polygones hautement détaillés. De plus, la lumière reste correcte quelque soit l'angle dans lequel on regarde l'objet. Pour le jeu Farcry, les développeurs utilisent une méthode de ``bump-mapping'' amélioré appelée ``normal mapping''. La méthode consiste à réaliser un modèle très détaillé en utilisant de nombreux polygones. Le modèle qui sera utilisé dans le jeu final sera une version beaucoup plus allégée en polygones. Ainsi, il y a une différence plus ou moins grande entre le modèle initial et le modèle final simplifié. L'astuce est donc d'avoir une texture très détaillée produite à partir du modèle initial, que l'on applique au modèle final. Ainsi, les détails perdus (polygones détruits) entre les deux modèles seront visibles grâce à cette texture. Il est important de noter que cette méthode est efficace en terme d'optimisation, cependant elle n'est pas parfaite du fait qu'il y a une réelle perte de géométrie qui n'est pas palliée par la texture. Il s'agit donc d'une illusion. Cette méthode est souvent utilisée pour les pneus des voitures. Effectivement, les textures sont très détaillées tandis que la forme circulaire du modèle final reste approximative.
 
+\newpage
 Comme expliqué plus haut, il est possible de compresser les normal map à l'aide de la compression DXT, mais souvent des artefacts apparaissent. Il est donc préférable d'utiliser la compression 3Dc et d'après ATI, cette méthode permet de compresser des normal map avec un rapport de 4/1 sans perte de qualité significative.
 
 \begin{figure}[!h]%
