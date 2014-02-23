@@ -670,7 +670,7 @@ Les compressions DXT et 3Dc permettent d'optimiser la vitesse de chargement des 
 
 %------------------------------------------------
 \newpage
-\section{Optimisation par les shaders}
+\section{Remarque sur les shaders}
 Le chargement du niveau peut être réduit en déportant les ressources graphiques dans les shaders. Par exemple, au lieu de charger le monde et les shaders, nous chargeons une représentation compressée du monde pour le générer par algorithme et nous gérons le texturage et l'affichage de celui ci via shader. 
 
 Les shaders ayant une taille plus petite, ils sont de ce fait plus rapides à charger mais demandent plus de puissance coté GPU. Ainsi, nous pouvons afficher un terrain complexe avec de nombreux détails de profondeur et un texturage très différent en fonction de son niveau par rapport à la mer, en générant les différents changements dans le shader.
@@ -699,18 +699,18 @@ Cependant, les chargements sont appliqués de manière assez brutale, le jeu ét
 \subsection{Intégration au monde}
 Les chargements peuvent être intégrés au jeu et complètement transparents pour l'utilisateur. Si nous prenons l'exemple de Metroid Prime sur Gamecube, le jeu très détaillé nécessite de charger beaucoup de données. Cependant, il ne présente aucun écran de chargement. Les développeurs ont eu une idée astucieuse pour camoufler ces chargements et savoir dans quelle zone le joueur va se diriger pour charger uniquement le nécessaire.
 
-\begin{wrapfigure}{l}{0.5\textwidth}
+\begin{wrapfigure}{l}{0.39\textwidth}
 \begin{center}
-\includegraphics[width=0.45\textwidth]{images/metroid-prime_map.png}
+\includegraphics[width=0.38\textwidth]{images/metroid-prime_map.png}
 \end{center}
 \caption{Salle d'un niveau de Metroid Prime}
 \end{wrapfigure}
 
 Sur l'image ci-contre, nous pouvons apercevoir une salle d'un niveau du jeu, avec en bleu les portes qui permettent au joueur de quitter la salle pour en rejoindre une autre. A priori, impossible de savoir vers quelle porte le joueur va se diriger, et charger l'ensemble des zones connectées prendrait trop de mémoire et ne permettrait pas d'avoir un monde aussi détaillé. Pour résoudre ce problème, les développeurs du jeu ont trouvé une astuce: demander au joueur de réaliser une action vers la porte qu'il souhaite franchir, en tirant dessus. Une fois le tir envoyé sur la porte, le chargement de la zone connectée est lancé.
 
-\begin{wrapfigure}{r}{0.40\textwidth}
+\begin{wrapfigure}{r}{0.35\textwidth}
 \begin{center}
-\includegraphics[width=0.35\textwidth]{images/metroid-prime_door.png}
+\includegraphics[width=0.33\textwidth]{images/metroid-prime_door.png}
 \end{center}
 \caption{Porte avant activation}
 \end{wrapfigure}
